@@ -57,34 +57,42 @@
       </div>
 
       <nav class="nav-user" aria-label="Личный кабинет">
-        <a
+        <button
           mat-button
-          routerLink="/favorites"
-          routerLinkActive="nav-user__link--active"
+          type="button"
           class="nav-user__link"
-          >Избранное</a
+          [class.nav-user__link--active]="activePanel() === 'favorites'"
+          (click)="openPanel('favorites')"
         >
-        <a
+          Избранное
+        </button>
+        <button
           mat-button
-          routerLink="/notifications"
-          routerLinkActive="nav-user__link--active"
+          type="button"
           class="nav-user__link"
-          >Уведомления</a
+          [class.nav-user__link--active]="activePanel() === 'notifications'"
+          (click)="openPanel('notifications')"
         >
-        <a
+          Уведомления
+        </button>
+        <button
           mat-button
-          routerLink="/messages"
-          routerLinkActive="nav-user__link--active"
+          type="button"
           class="nav-user__link"
-          >Сообщения</a
+          [class.nav-user__link--active]="activePanel() === 'messages'"
+          (click)="openPanel('messages')"
         >
-        <a
+          Сообщения
+        </button>
+        <button
           mat-button
-          routerLink="/profile"
-          routerLinkActive="nav-user__link--active"
+          type="button"
           class="nav-user__link"
-          >Профиль</a
+          [class.nav-user__link--active]="activePanel() === 'profile'"
+          (click)="openPanel('profile')"
         >
+          Профиль
+        </button>
       </nav>
     </mat-toolbar-row>
   </mat-toolbar>

@@ -36,7 +36,7 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   top: 0;
   z-index: 100;
   background: #fff;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+  box-shadow: none;
   font-family: $header-font-family;
 }
 
@@ -74,13 +74,14 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-family: 'Regular', 'Courier New', monospace;
 }
 
-// Angular Material toolbar — основная полоса
+// Angular Material toolbar — основная полоса (единый белый с панелью)
 .main-bar {
-  background: #ffffff !important;
+  background: #fff !important;
   box-shadow: none;
 
   .mat-toolbar-row,
   .main-bar__row {
+    background: #fff;
     max-width: 1280px;
     height: 130px;
     margin: 0 auto;

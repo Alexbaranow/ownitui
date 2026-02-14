@@ -1,0 +1,26 @@
+@if (isOpen()) {
+  <aside class="side-panel" role="dialog" aria-label="{{ title }}" [@panelSlide]>
+    <header class="side-panel__header">
+      <h2 class="side-panel__title">{{ title }}</h2>
+      <div class="side-panel__actions">
+        <button mat-icon-button type="button" class="side-panel__menu-btn" aria-label="Ещё">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          type="button"
+          class="side-panel__close-btn"
+          aria-label="Закрыть"
+          (click)="close()"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+    </header>
+    <div class="side-panel__body">
+      @if (contentComponent(); as comp) {
+        <ng-container *ngComponentOutlet="comp" />
+      }
+    </div>
+  </aside>
+}

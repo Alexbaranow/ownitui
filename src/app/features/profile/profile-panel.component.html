@@ -1,0 +1,47 @@
+<div class="profile-panel">
+  <section class="profile-panel__user">
+    <div class="profile-panel__avatar" aria-hidden="true">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <div class="profile-panel__info">
+      <span class="profile-panel__name">Иван Иванов</span>
+      <div class="profile-panel__rating">
+        <span class="profile-panel__rating-value">4,5</span>
+        <span class="profile-panel__stars" aria-label="Рейтинг 4.5 из 5">
+          @for (i of [1, 2, 3, 4, 5]; track i) {
+            <mat-icon class="profile-panel__star">{{ i <= 4 ? 'star' : 'star_half' }}</mat-icon>
+          }
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <div class="profile-panel__divider"></div>
+
+  <button mat-flat-button color="primary" class="profile-panel__action" type="button">
+    <mat-icon>person_add</mat-icon>
+    <span>Добавить профиль</span>
+  </button>
+
+  <div class="profile-panel__divider"></div>
+
+  <nav class="profile-panel__nav" aria-label="Разделы профиля">
+    <a href="#" class="profile-panel__nav-item profile-panel__nav-item--active">
+      <span>Мои объявления</span>
+      <span class="profile-panel__nav-count">(3)</span>
+    </a>
+    <a href="#" class="profile-panel__nav-item">
+      <span>Мои отзывы</span>
+      <span class="profile-panel__nav-count">3</span>
+    </a>
+    <a href="#" class="profile-panel__nav-item">Адреса</a>
+    <a href="#" class="profile-panel__nav-item">Аукцион</a>
+    <a href="#" class="profile-panel__nav-item">Настройки</a>
+  </nav>
+
+  <div class="profile-panel__spacer"></div>
+
+  <div class="profile-panel__footer">
+    <button mat-stroked-button class="profile-panel__logout" type="button">Покинуть профиль</button>
+  </div>
+</div>
