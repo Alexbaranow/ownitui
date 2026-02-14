@@ -1,0 +1,16 @@
+# Build & dependencies
+/dist
+/node_modules
+/coverage
+*.min.js
+
+# Generated / lock
+package-lock.json
+
+# Angular
+*.ngfactory.ts
+*.ngsummary.json
+
+# Misc
+*.md
+.editorconfig
