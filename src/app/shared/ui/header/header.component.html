@@ -1,0 +1,91 @@
+<header class="header">
+  <!-- Верхняя чёрная полоса -->
+  <div class="top-bar">
+    <div class="top-bar__row">
+      <span class="top-bar__spacer"></span>
+      <nav class="top-bar__links" aria-label="Служебные ссылки">
+        <a mat-button routerLink="/buyers" class="top-bar__link">Покупателям</a>
+        <a mat-button routerLink="/sellers" class="top-bar__link">Продавцам</a>
+        <a mat-button routerLink="/support" class="top-bar__link">Поддержка</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Angular Material: основная навигация -->
+  <mat-toolbar class="main-bar">
+    <mat-toolbar-row class="main-bar__row">
+      <a routerLink="/" class="logo" aria-label="OwnIt — на главную">OwnIt</a>
+
+      <div class="search-block">
+        <form class="search-form" (ngSubmit)="onSearch()" role="search">
+          <div class="search-field">
+            <mat-icon class="search-field__icon">search</mat-icon>
+            <input
+              class="search-field__input"
+              type="search"
+              placeholder="Поиск"
+              [(ngModel)]="searchQuery"
+              name="search"
+              aria-label="Поиск по сайту"
+            />
+          </div>
+        </form>
+        <nav class="nav-primary" aria-label="Основная навигация">
+          <a
+            mat-button
+            routerLink="/"
+            routerLinkActive="nav-primary__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-primary__link"
+            >Главная</a
+          >
+          <a
+            mat-button
+            routerLink="/auction"
+            routerLinkActive="nav-primary__link--active"
+            class="nav-primary__link"
+            >Аукцион</a
+          >
+          <a
+            mat-button
+            routerLink="/categories"
+            routerLinkActive="nav-primary__link--active"
+            class="nav-primary__link"
+            >Категории</a
+          >
+        </nav>
+      </div>
+
+      <nav class="nav-user" aria-label="Личный кабинет">
+        <a
+          mat-button
+          routerLink="/favorites"
+          routerLinkActive="nav-user__link--active"
+          class="nav-user__link"
+          >Избранное</a
+        >
+        <a
+          mat-button
+          routerLink="/notifications"
+          routerLinkActive="nav-user__link--active"
+          class="nav-user__link"
+          >Уведомления</a
+        >
+        <a
+          mat-button
+          routerLink="/messages"
+          routerLinkActive="nav-user__link--active"
+          class="nav-user__link"
+          >Сообщения</a
+        >
+        <a
+          mat-button
+          routerLink="/profile"
+          routerLinkActive="nav-user__link--active"
+          class="nav-user__link"
+          >Профиль</a
+        >
+      </nav>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>

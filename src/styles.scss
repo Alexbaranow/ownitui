@@ -28,6 +28,18 @@ $ownitui-theme: mat.define-theme(
 // that you are using.
 :root {
   @include mat.all-component-themes($ownitui-theme);
+
+  // Токены из библиотеки Figma
+  --m3-on-surface: #1c1b1f;
+  --m3-on-surface-variant: #49454f;
+  --m3-outline: #79747e;
+  --m3-outline-variant: #cac4d0;
+  --m3-surface: #fef7ff;
+  --m3-background: #fffbfe;
+  --m3-error: #ba1a1a;
+  --m3-on-error: #ffffff;
+  --m3-label-small-size: 11px;
+  --m3-label-small-weight: 500;
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
