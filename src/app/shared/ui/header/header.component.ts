@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
@@ -28,13 +35,13 @@ export class HeaderComponent {
 
   readonly searchSubmit = output<string>();
 
-  searchQuery = '';
+  readonly searchQuery = signal('');
   readonly activePanel = computed(() =>
     this.panelService.isOpen() ? this.panelService.panelType() : null
   );
 
   onSearch(): void {
-    this.searchSubmit.emit(this.searchQuery.trim());
+    this.searchSubmit.emit(this.searchQuery().trim());
   }
 
   openPanel(type: PanelType): void {

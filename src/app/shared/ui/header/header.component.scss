@@ -27,12 +27,14 @@ $header-nav-primary-size: 15px;
 $header-nav-primary-gap: 24px;
 
 $header-nav-user-size: 15px;
-$header-nav-user-gap: 14px;
+$header-nav-user-gap: 1px;
+$header-nav-user-width: 360px; // резерв под кнопки (Избранное, Уведомления, Сообщения, Профиль)
 
 $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
 
 .header {
   position: sticky;
+  height: 170px;
   top: 0;
   z-index: 100;
   background: #fff;
@@ -76,6 +78,8 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
 
 // Angular Material toolbar — основная полоса (единый белый с панелью)
 .main-bar {
+  position: relative;
+  width: 100%;
   background: #fff !important;
   box-shadow: none;
 
@@ -85,10 +89,10 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
     max-width: 1280px;
     height: 130px;
     margin: 0 auto;
-    padding: $header-main-padding-top $header-main-padding-right $header-main-padding-bottom
-      $header-main-padding-left;
+    padding: $header-main-padding-top ($header-main-padding-right + $header-nav-user-width)
+      $header-main-padding-bottom $header-main-padding-left;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     gap: $header-main-bar-gap;
     align-items: start;
     min-height: auto;
@@ -113,6 +117,7 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .search-block {
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -176,64 +181,81 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   justify-content: center;
 }
 
+// Подсветка: один светлый фон для всех кнопок
+$header-nav-highlight-bg: #f3f4f8;
+$header-nav-text: #1c1b1f;
+
 .nav-primary__link {
-  color: $header-nav-primary-color !important;
+  color: $header-nav-text !important;
   text-decoration: none;
   font-size: $header-nav-primary-size !important;
   font-weight: 500 !important;
   font-family: $header-font-family;
   text-transform: none !important;
   letter-spacing: normal !important;
+  padding: 6px 14px;
+  border-radius: 999px;
 
   &:hover {
-    color: $header-nav-primary-color !important;
-    opacity: 0.8;
+    color: $header-nav-text !important;
   }
 
   &--active {
-    color: $header-nav-primary-color !important;
+    color: $header-nav-text !important;
     text-decoration: underline;
     text-underline-offset: 5px;
     text-decoration-thickness: 1px;
+    // background-color: $header-nav-highlight-bg;
   }
 }
 
 .nav-user {
+  position: absolute;
+  right: $header-main-padding-right;
+  top: $header-main-padding-top + 10px;
   display: flex;
   gap: $header-nav-user-gap;
   align-items: center;
   flex-shrink: 0;
-  margin-top: 10px;
-  // смещение кнопок правее
-  margin-right: -70px;
+  flex-wrap: nowrap;
 
   // Ширина кнопок
   .nav-user__link.mat-mdc-button,
-  a[mat-button].nav-user__link {
-    padding-left: 2px;
-    padding-right: 2px;
+  button[mat-button].nav-user__link {
+    padding-left: 14px;
+    padding-right: 14px;
   }
 }
 
 .nav-user__link {
-  color: #000000 !important;
+  color: $header-nav-text !important;
   text-decoration: none;
+  text-decoration-color: $header-nav-text;
   font-size: $header-nav-user-size !important;
   font-weight: 200 !important;
   white-space: nowrap;
   font-family: $header-font-family;
   text-transform: none !important;
   letter-spacing: normal !important;
+  padding: 6px 14px;
+  border-radius: 999px;
 
   &:hover {
+    color: $header-nav-text !important;
     text-decoration: underline;
     text-underline-offset: 5px;
+    // Цвет подсветки, если нужен
+    // text-decoration-color: $header-nav-text;
+    // background-color: $header-nav-highlight-bg;
   }
 
   &--active {
+    color: $header-nav-text !important;
     text-decoration: underline;
     text-underline-offset: 5px;
     text-decoration-thickness: 1px;
+    text-decoration-color: $header-nav-text;
+    background-color: $header-nav-highlight-bg;
   }
 }
 
@@ -257,7 +279,7 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
     gap: 24px;
     height: auto;
     min-height: 100px;
-    padding: 20px 16px 20px 16px;
+    padding: 20px (16px + 380px) 20px 16px;
   }
 
   .logo {
@@ -271,7 +293,7 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   }
 
   .nav-primary {
-    gap: 16px;
+    gap: 1px;
   }
 
   .nav-primary__link {
@@ -279,10 +301,9 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   }
 
   .nav-user {
-    grid-column: 2;
-    justify-self: end;
-    margin-top: 0;
-    margin-right: 0;
+    right: 16px;
+    top: 20px;
+    flex-wrap: nowrap;
   }
 
   .nav-user__link {
@@ -304,7 +325,7 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   .main-bar .mat-toolbar-row,
   .main-bar .main-bar__row {
     gap: 16px;
-    padding: 16px 12px;
+    padding: 16px (12px + 260px) 16px 12px;
   }
 
   .logo {
@@ -331,7 +352,9 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   }
 
   .nav-user {
-    gap: 8px;
+    right: 12px;
+    top: 16px;
+    gap: 4px;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
@@ -356,7 +379,7 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
 
   .main-bar .mat-toolbar-row,
   .main-bar .main-bar__row {
-    padding: 12px;
+    padding: 12px (12px + 220px) 12px 12px;
   }
 
   .logo {
@@ -373,7 +396,9 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   }
 
   .nav-user {
-    gap: 6px;
+    right: 12px;
+    top: 12px;
+    gap: 2px;
   }
 
   .nav-user__link {

@@ -1,0 +1,57 @@
+<article class="product-card">
+  <div class="product-card__image-wrap">
+    @if (product().thumbnail; as src) {
+      <img
+        [src]="src"
+        [alt]="product().title"
+        class="product-card__image"
+        [attr.loading]="priority() ? 'eager' : 'lazy'"
+      />
+    } @else {
+      <div class="product-card__placeholder">Нет фото</div>
+    }
+    <button
+      type="button"
+      class="product-card__favorite"
+      aria-label="Добавить в избранное"
+      (click)="onFavoriteClick($event)"
+    >
+      <mat-icon>favorite_border</mat-icon>
+    </button>
+
+    @if (hasDiscount() || isWowPrice()) {
+      <div class="product-card__badges">
+        @if (isWowPrice()) {
+          <span class="product-card__badge product-card__badge--wow">Вау-цены</span>
+        }
+        @if (hasDiscount()) {
+          <span class="product-card__badge product-card__badge--sale">Распродажа</span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="product-card__body">
+    <div class="product-card__price-row">
+      <span class="product-card__price" [class.product-card__price--discount]="hasDiscount()">
+        {{ product().price | number: '1.0-0' }} ₽
+      </span>
+      @if (hasDiscount()) {
+        <span class="product-card__meta">
+          <s class="product-card__original">{{ originalPrice() | number: '1.0-0' }} ₽</s>
+          <span class="product-card__discount"
+            >-{{ product().discountPercentage | number: '1.0-0' }}%</span
+          >
+        </span>
+      }
+    </div>
+
+    <h3 class="product-card__title">{{ product().title }}</h3>
+
+    <div class="product-card__rating">
+      <mat-icon class="product-card__star">star</mat-icon>
+      <span class="product-card__rating-value">{{ product().rating | number: '1.1' }}</span>
+      <span class="product-card__reviews">{{ reviewsCount() }} отзывов</span>
+    </div>
+  </div>
+</article>

@@ -24,7 +24,8 @@
               class="search-field__input"
               type="search"
               placeholder="Поиск"
-              [(ngModel)]="searchQuery"
+              [ngModel]="searchQuery()"
+              (ngModelChange)="searchQuery.set($event)"
               name="search"
               aria-label="Поиск по сайту"
             />

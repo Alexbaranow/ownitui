@@ -1,0 +1,26 @@
+<div class="home">
+  <section class="home__section">
+    <h1 class="visually-hidden">Товары маркетплейса OwnIt</h1>
+
+    @if (loading()) {
+      <div class="home__loading">
+        <p>Загрузка товаров...</p>
+      </div>
+    } @else if (error()) {
+      <div class="home__error">
+        <p>{{ error() }}</p>
+        <button type="button" (click)="loadProducts()">Попробовать снова</button>
+      </div>
+    } @else {
+      <div class="home__grid">
+        @for (product of products(); track product.id; let i = $index) {
+          <app-product-card
+            [product]="product"
+            [priority]="i === 0"
+            (favoriteClick)="onFavorite($event)"
+          />
+        }
+      </div>
+    }
+  </section>
+</div>
