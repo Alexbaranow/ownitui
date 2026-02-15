@@ -9,7 +9,7 @@ RUN npm run build
 RUN mkdir -p /out && (cp -r dist/ownitui/browser/. /out/ 2>/dev/null || cp -r dist/ownitui/. /out/)
 
 FROM nginx:alpine
-RUN rm -f /etc/nginx/conf.d/default.conf
+RUN apk add --no-cache ca-certificates && rm -f /etc/nginx/conf.d/default.conf
 COPY deploy/nginx-ownitui.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /out /usr/share/nginx/html/
 EXPOSE 80

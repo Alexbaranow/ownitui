@@ -36,7 +36,10 @@ export class ProductApiService {
     }
 
     const stream$ = this.http
-      .get<{ products: DummyJsonProduct[]; total: number }>(`${API_BASE}?limit=${limit}&skip=${skip}`)
+      .get<{
+        products: DummyJsonProduct[];
+        total: number;
+      }>(`${API_BASE}?limit=${limit}&skip=${skip}`)
       .pipe(
         map((res) => ({
           products: res.products.map((p) => this.mapToProduct(p)),
@@ -53,9 +56,12 @@ export class ProductApiService {
   searchProducts(query: string): Observable<{ products: Product[]; total: number }> {
     const q = query.trim();
     const url = q ? `${API_BASE}/search?q=${encodeURIComponent(q)}` : `${API_BASE}?limit=100`;
-    return this.http
-      .get<{ products: DummyJsonProduct[]; total: number }>(url)
-      .pipe(map((res) => ({ products: res.products.map((p) => this.mapToProduct(p)), total: res.total })));
+    return this.http.get<{ products: DummyJsonProduct[]; total: number }>(url).pipe(
+      map((res) => ({
+        products: res.products.map((p) => this.mapToProduct(p)),
+        total: res.total,
+      }))
+    );
   }
 
   /** URL картинки: локальные файлы из public/img по индексу продукта (fallback для CORS) */
