@@ -1,0 +1,12 @@
+# Из корня проекта (после npm run build):
+#   docker compose -f deploy/docker-compose.yml up -d --build
+
+services:
+  web:
+    image: ownitui
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped
