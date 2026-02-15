@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { HeaderComponent } from './shared/ui/header/header.component';
 import { SidePanelComponent } from './core/panel/side-panel.component';
+import { SidePanelService } from './core/panel/side-panel.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,8 @@ import { SidePanelComponent } from './core/panel/side-panel.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
+  protected readonly panelService = inject(SidePanelService);
+
   onSearch(query: string): void {
     if (query) {
       // TODO: поиск

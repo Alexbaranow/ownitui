@@ -1,45 +1,59 @@
 // Расстояния, цвета и шрифты по макету (Frame 40 / скриншот)
 // Верхняя полоса: чёрный фон, белый текст, тонкий шрифт 12–14px, отступ справа 48px, между ссылками 18px
 // Основная полоса: логотип чёрный 36–40px, отступ слева 56px; поиск placeholder #A0A0A0, линия #CCCCCC; под поиском отступ 12px; навигация 14–16px, между пунктами 24px; справа отступ 36px
-$header-top-bar-height: 20px; // ужато вдвое (Material по умолчанию 64px — переопределяем ниже)
+$header-top-bar-height: 16px; // ужато (Material по умолчанию 64px — переопределяем ниже)
 $header-top-bar-text: #ffffff;
 $header-top-bar-font-size: 12px;
 $header-top-bar-gap: 18px;
 $header-top-bar-padding-right: 48px;
 $header-top-bar-padding-h: 24px;
 
+$header-font-family: Roboto, 'Helvetica Neue', sans-serif;
+
 $header-logo-color: #000000;
+$header-logo-font: 'Spartan', $header-font-family;
 // Размер лого
-$header-logo-size: 56px;
-$header-main-padding-left: 1px;
+$header-logo-size: 48px;
+$header-main-padding-left: 56px; /* по макету; с margin-left: -50px у лого даёт ~6px от края */
 $header-main-padding-right: 20px;
-$header-main-padding-top: 28px;
-$header-main-padding-bottom: 28px;
+$header-main-padding-top: 16px;
+$header-main-padding-bottom: 22px;
 $header-main-bar-gap: 60px;
 
 $header-placeholder: #a0a0a0; // альт.: var(--m3-on-surface-variant)
 $header-search-border: var(--m3-outline-variant, #cac4d0); // из библиотеки Figma M3
 $header-search-height: 36px;
-$header-search-to-nav-gap: 12px;
+$header-search-to-nav-gap: 8px;
 
 $header-nav-primary-color: #000000;
-$header-nav-primary-size: 15px;
+$header-nav-primary-size: 13px;
 $header-nav-primary-gap: 24px;
 
 $header-nav-user-size: 15px;
 $header-nav-user-gap: 1px;
-$header-nav-user-width: 360px; // резерв под кнопки (Избранное, Уведомления, Сообщения, Профиль)
+$header-nav-user-width: 370px; // база; динамически меняется через --header-nav-user-reserve по ширине viewport
 
-$header-font-family: Roboto, 'Helvetica Neue', sans-serif;
+// Итоговая высота: top-bar + main-bar row (должна совпадать с app.component.scss и side-panel)
+$header-total-height: 126px; // 16 + 110
 
 .header {
-  position: sticky;
-  height: 170px;
+  --header-nav-user-reserve: #{$header-nav-user-width};
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  height: $header-total-height;
   z-index: 100;
   background: #fff;
   box-shadow: none;
   font-family: $header-font-family;
+}
+
+// Резерв справа под «Избранное» и др.: в узком десктопном диапазоне увеличиваем (нет наезда на поиск)
+@media (min-width: 901px) and (max-width: 1100px) {
+  .header {
+    --header-nav-user-reserve: 410px;
+  }
 }
 
 // Верхняя чёрная полоса
@@ -87,9 +101,12 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
   .main-bar__row {
     background: #fff;
     max-width: 1280px;
-    height: 130px;
+    height: 110px;
     margin: 0 auto;
-    padding: $header-main-padding-top ($header-main-padding-right + $header-nav-user-width)
+    padding: $header-main-padding-top
+      calc(
+        #{$header-main-padding-right} + var(--header-nav-user-reserve, #{$header-nav-user-width})
+      )
       $header-main-padding-bottom $header-main-padding-left;
     display: grid;
     grid-template-columns: auto 1fr;
@@ -102,13 +119,14 @@ $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
 .logo {
   font-size: $header-logo-size;
   line-height: $header-logo-size;
-  font-weight: 300;
-  letter-spacing: -0.02em;
+  font-weight: 400; /* Regular */
+  letter-spacing: 0.07em;
   color: $header-logo-color;
   text-decoration: none;
   white-space: nowrap;
-  font-family: $header-font-family;
-  margin-left: -50px;
+  font-family: $header-logo-font;
+  margin-left: -125px;
+  margin-top: 5px;
 
   &:hover {
     color: $header-logo-color;
@@ -213,11 +231,7 @@ $header-nav-text: #1c1b1f;
   position: absolute;
   right: $header-main-padding-right;
   top: $header-main-padding-top + 10px;
-  display: flex;
-  gap: $header-nav-user-gap;
-  align-items: center;
   flex-shrink: 0;
-  flex-wrap: nowrap;
 
   // Ширина кнопок
   .nav-user__link.mat-mdc-button,
@@ -225,6 +239,25 @@ $header-nav-text: #1c1b1f;
     padding-left: 14px;
     padding-right: 14px;
   }
+}
+
+.nav-user__group {
+  display: flex;
+  gap: max(6px, $header-nav-user-gap);
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* На десктопе (≥600px) только текст — иконка полностью скрыта и не занимает места */
+.nav-user__icon {
+  display: none !important;
+  visibility: hidden;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  font-size: 0 !important;
 }
 
 .nav-user__link {
@@ -244,9 +277,6 @@ $header-nav-text: #1c1b1f;
     color: $header-nav-text !important;
     text-decoration: underline;
     text-underline-offset: 5px;
-    // Цвет подсветки, если нужен
-    // text-decoration-color: $header-nav-text;
-    // background-color: $header-nav-highlight-bg;
   }
 
   &--active {
@@ -260,148 +290,507 @@ $header-nav-text: #1c1b1f;
 }
 
 // === Адаптивность ===
+// Зазор между поиском и кнопками (Избранное и др.) — единый при любом разрешении
+$header-search-to-nav-gap-adaptive: 24px;
+// Высота шапки при max-width: 1220px (синхрон с app.component.scss и side-panel.component.scss).
+// Важно: медиазапрос срабатывает только при ширине окна ≤1220px.
+$header-total-height-1220: 82px;
+// При max-width: 900px, 600px, 480px — ещё компактнее (синхрон с app и side-panel)
+$header-total-height-900: 72px;
+$header-total-height-600: 68px;
+$header-total-height-480: 64px;
 
-// Tablet: перестройка layout main-bar
-@media (max-width: 900px) {
+// Tablet: перестройка layout main-bar, более компактная шапка
+@media (max-width: 1220px) {
+  .header {
+    height: $header-total-height-1220;
+  }
+
   .top-bar__row {
     padding-left: 16px;
-    padding-right: 24px;
+    padding-right: 16px;
   }
 
   .top-bar__links {
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .top-bar__link {
+    font-size: 11px;
   }
 
   .main-bar .mat-toolbar-row,
   .main-bar .main-bar__row {
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
-    gap: 24px;
+    gap: 6px;
     height: auto;
-    min-height: 100px;
-    padding: 20px (16px + 380px) 20px 16px;
+    min-height: 0;
+    padding: 6px (12px + 300px + $header-search-to-nav-gap-adaptive) 6px 16px;
+    min-width: 0;
   }
 
   .logo {
-    font-size: 42px;
-    line-height: 42px;
-  }
-
-  .search-block {
-    grid-column: 1 / -1;
-    order: 1;
+    font-size: 32px;
+    line-height: 32px;
+    margin-left: 0;
   }
 
   .nav-primary {
     gap: 1px;
   }
 
-  .nav-primary__link {
-    font-size: 14px !important;
+  .nav-user {
+    right: 14px;
+    top: 10px;
+    max-width: 300px;
   }
 
-  .nav-user {
-    right: 16px;
-    top: 20px;
+  .nav-user__group {
     flex-wrap: nowrap;
-  }
-
-  .nav-user__link {
-    font-size: 13px !important;
-  }
-}
-
-// Large mobile
-@media (max-width: 600px) {
-  .top-bar__row {
-    padding-left: 12px;
-    padding-right: 16px;
-  }
-
-  .top-bar__links {
-    gap: 10px;
-  }
-
-  .main-bar .mat-toolbar-row,
-  .main-bar .main-bar__row {
-    gap: 16px;
-    padding: 16px (12px + 260px) 16px 12px;
-  }
-
-  .logo {
-    font-size: 32px;
-    line-height: 32px;
-  }
-
-  .search-field__input {
-    font-size: 14px;
-  }
-
-  .search-field__icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-
-  .nav-primary {
-    gap: 12px;
-  }
-
-  .nav-primary__link {
-    font-size: 13px !important;
-  }
-
-  .nav-user {
-    right: 12px;
-    top: 16px;
-    gap: 4px;
-    flex-wrap: wrap;
+    gap: 2px;
     justify-content: flex-end;
   }
 
   .nav-user__link {
     font-size: 12px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
 
-  .nav-user .nav-user__link.mat-mdc-button,
-  .nav-user a[mat-button].nav-user__link {
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-}
-
-// Small mobile
-@media (max-width: 480px) {
-  .top-bar__row {
-    padding-left: 12px;
-    padding-right: 12px;
+  .search-block {
+    gap: 4px;
   }
 
-  .main-bar .mat-toolbar-row,
-  .main-bar .main-bar__row {
-    padding: 12px (12px + 220px) 12px 12px;
-  }
-
-  .logo {
-    font-size: 28px;
-    line-height: 28px;
-  }
-
-  .nav-primary {
-    gap: 10px;
+  .search-field {
+    min-height: 28px;
+    padding-bottom: 2px;
   }
 
   .nav-primary__link {
     font-size: 12px !important;
   }
+}
 
+// ===========
+
+@media (max-width: 900px) {
+  .header {
+    height: $header-total-height-900;
+  }
+
+  .top-bar__row {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .top-bar__links {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .top-bar__link {
+    font-size: clamp(9px, 1.4vw, 11px);
+  }
+
+  .main-bar .mat-toolbar-row,
+  .main-bar .main-bar__row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto;
+    gap: 10px;
+    align-items: center;
+    height: auto;
+    min-height: 0;
+    padding: 8px 16px;
+    min-width: 0;
+  }
+
+  .logo {
+    font-size: clamp(20px, 4vw, 26px);
+    line-height: 1.2;
+    margin-left: 0;
+  }
+
+  .search-block {
+    width: 100%;
+    min-width: 0;
+    padding-left: 0;
+    gap: 0; /* строка поиска прижата к Главная/Аукцион/Категории, на уровне лого и кнопок справа */
+  }
+
+  .search-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .search-field {
+    width: 100%;
+    min-width: 0;
+    min-height: 26px;
+    padding-bottom: 2px;
+    gap: 6px;
+  }
+
+  .search-field__icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .search-field__input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    font-size: clamp(11px, 1.8vw, 13px);
+    box-sizing: border-box;
+  }
+
+  .nav-primary {
+    gap: 4px;
+  }
+
+  .nav-primary__link {
+    font-size: clamp(10px, 1.6vw, 12px) !important;
+    padding: 4px 10px;
+  }
+
+  /* Кнопки с принудительным переносом — ограничиваем ширину, чтобы поиск был шире */
   .nav-user {
-    right: 12px;
-    top: 12px;
-    gap: 2px;
+    position: static;
+    right: auto;
+    top: auto;
+    max-width: min(220px, 32vw);
+    min-width: 0;
+  }
+
+  .nav-user__group {
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    justify-content: flex-end;
+    align-content: center;
+    max-width: 100%;
   }
 
   .nav-user__link {
+    font-size: clamp(10px, 1.6vw, 11px) !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
+
+// Large mobile (≤600px): компактная шапка, поиск шире, шрифты меньше
+@media (max-width: 600px) {
+  .header {
+    height: $header-total-height-600;
+  }
+
+  .top-bar__row {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .top-bar__links {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .top-bar__link {
+    font-size: clamp(8px, 1.2vw, 10px);
+  }
+
+  .main-bar .mat-toolbar-row,
+  .main-bar .main-bar__row {
+    gap: 6px;
+    padding: 6px 12px;
+    min-width: 0;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .logo {
+    font-size: clamp(16px, 3vw, 22px);
+    line-height: 1.2;
+    margin-left: 0;
+  }
+
+  .search-block {
+    padding-left: 6px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    gap: 0; /* строка поиска прижата к Главная/Аукцион/Категории */
+  }
+
+  .search-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .search-field {
+    width: 100%;
+    min-width: 0;
+    min-height: 22px;
+    padding-bottom: 1px;
+    gap: 4px;
+  }
+
+  .search-field__input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    font-size: clamp(10px, 1.5vw, 12px);
+    box-sizing: border-box;
+  }
+
+  .search-field__icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Главная / Аукцион / Категории — строго по центру под поиском, меньше шрифт */
+  .nav-primary {
+    gap: 2px 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-primary__link {
+    font-size: clamp(8px, 1.3vw, 10px) !important;
+    padding: 2px 5px;
+  }
+
+  .nav-user {
+    max-width: none;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .nav-user__group {
+    gap: 4px;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-content: center;
+  }
+}
+
+/* Строго меньше 600px: заменяем текст на иконки — квадратные чёрные кнопки с белыми силуэтами */
+@media (max-width: 599px) {
+  .search-block {
+    padding-left: 6px;
+    width: 90%;
+    max-width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    gap: 2px;
+  }
+
+  .search-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .search-field {
+    width: 100%;
+    min-width: 0;
+    min-height: 22px;
+    padding-bottom: 1px;
+    gap: 4px;
+  }
+
+  .search-field__input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    font-size: clamp(10px, 1.5vw, 12px);
+    box-sizing: border-box;
+  }
+
+  .search-field__icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .nav-user__icon {
+    display: block !important;
+    visibility: visible;
+    font-size: 12px !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    color: #fff !important;
+    flex-shrink: 0;
+  }
+
+  .nav-user__label {
+    display: none !important;
+    visibility: hidden;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .nav-user__link {
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    padding: 0 !important;
+    border-radius: 6px;
+    background-color: #000 !important;
+    color: #fff !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+
+    &:hover {
+      background-color: #333 !important;
+      color: #fff !important;
+      text-decoration: none !important;
+    }
+
+    &--active {
+      background-color: #1a1a1a !important;
+      color: #fff !important;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  .nav-user .nav-user__link.mat-mdc-button,
+  .nav-user button[mat-button].nav-user__link {
+    min-width: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+  }
+
+  .nav-user__link ::ng-deep .mdc-button__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+}
+
+// Small mobile (≤480px): ещё компактнее, переносы, поиск на всю ширину
+@media (max-width: 480px) {
+  .header {
+    height: $header-total-height-480;
+  }
+
+  .top-bar__row {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .top-bar__link {
+    font-size: clamp(8px, 1.2vw, 10px);
+  }
+
+  .main-bar .mat-toolbar-row,
+  .main-bar .main-bar__row {
+    padding: 6px 10px;
+    gap: 6px;
+    min-width: 0;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .logo {
+    font-size: clamp(14px, 2.8vw, 18px);
+    line-height: 1.2;
+    margin-left: 0;
+  }
+
+  .search-block {
+    gap: 0;
+    padding-left: 4px;
+  }
+
+  .search-field {
+    min-height: 20px;
+    padding-bottom: 1px;
+    gap: 3px;
+  }
+
+  .search-field__input {
+    font-size: clamp(9px, 1.4vw, 11px);
+  }
+
+  .search-field__icon {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+  }
+
+  /* ≤480px: по центру под поиском, ещё меньше шрифт */
+  .nav-primary {
+    gap: 2px 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-primary__link {
+    font-size: clamp(7px, 1.2vw, 9px) !important;
+    padding: 2px 4px;
+  }
+
+  .nav-user__group {
+    gap: 3px;
+  }
+
+  .nav-user__icon {
     font-size: 11px !important;
+    width: 11px !important;
+    height: 11px !important;
+  }
+
+  .nav-user__link {
+    min-width: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .nav-user .nav-user__link.mat-mdc-button,
+  .nav-user button[mat-button].nav-user__link {
+    min-width: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+  }
+}
+
+// Очень узкий экран — кнопки и шрифты ещё меньше
+@media (max-width: 400px) {
+  .nav-primary__link {
+    font-size: clamp(6px, 1.1vw, 8px) !important;
+    padding: 1px 3px;
+  }
+
+  .nav-user__group {
+    gap: 2px;
+  }
+
+  .nav-user__icon {
+    font-size: 10px !important;
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  .nav-user__link {
+    min-width: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .nav-user .nav-user__link.mat-mdc-button,
+  .nav-user button[mat-button].nav-user__link {
+    min-width: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
 }

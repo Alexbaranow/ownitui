@@ -1,5 +1,5 @@
 <app-header (searchSubmit)="onSearch($event)" />
-<main class="main">
+<main class="main" [class.main--panel-open]="panelService.isOpen()">
   <router-outlet />
 </main>
 <app-side-panel />

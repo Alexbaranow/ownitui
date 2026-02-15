@@ -58,42 +58,52 @@
       </div>
 
       <nav class="nav-user" aria-label="Личный кабинет">
-        <button
-          mat-button
-          type="button"
-          class="nav-user__link"
-          [class.nav-user__link--active]="activePanel() === 'favorites'"
-          (click)="openPanel('favorites')"
-        >
-          Избранное
-        </button>
-        <button
-          mat-button
-          type="button"
-          class="nav-user__link"
-          [class.nav-user__link--active]="activePanel() === 'notifications'"
-          (click)="openPanel('notifications')"
-        >
-          Уведомления
-        </button>
-        <button
-          mat-button
-          type="button"
-          class="nav-user__link"
-          [class.nav-user__link--active]="activePanel() === 'messages'"
-          (click)="openPanel('messages')"
-        >
-          Сообщения
-        </button>
-        <button
-          mat-button
-          type="button"
-          class="nav-user__link"
-          [class.nav-user__link--active]="activePanel() === 'profile'"
-          (click)="openPanel('profile')"
-        >
-          Профиль
-        </button>
+        <div class="nav-user__group">
+          <button
+            mat-button
+            type="button"
+            class="nav-user__link"
+            [class.nav-user__link--active]="activePanel() === 'favorites'"
+            (click)="openPanel('favorites')"
+            aria-label="Избранное"
+          >
+            <mat-icon class="nav-user__icon">favorite_border</mat-icon>
+            <span class="nav-user__label">Избранное</span>
+          </button>
+          <button
+            mat-button
+            type="button"
+            class="nav-user__link"
+            [class.nav-user__link--active]="activePanel() === 'notifications'"
+            (click)="openPanel('notifications')"
+            aria-label="Уведомления"
+          >
+            <mat-icon class="nav-user__icon">notifications_none</mat-icon>
+            <span class="nav-user__label">Уведомления</span>
+          </button>
+          <button
+            mat-button
+            type="button"
+            class="nav-user__link"
+            [class.nav-user__link--active]="activePanel() === 'messages'"
+            (click)="openPanel('messages')"
+            aria-label="Сообщения"
+          >
+            <mat-icon class="nav-user__icon">message</mat-icon>
+            <span class="nav-user__label">Сообщения</span>
+          </button>
+          <button
+            mat-button
+            type="button"
+            class="nav-user__link"
+            [class.nav-user__link--active]="activePanel() === 'profile'"
+            (click)="openPanel('profile')"
+            aria-label="Профиль"
+          >
+            <mat-icon class="nav-user__icon">person</mat-icon>
+            <span class="nav-user__label">Профиль</span>
+          </button>
+        </div>
       </nav>
     </mat-toolbar-row>
   </mat-toolbar>

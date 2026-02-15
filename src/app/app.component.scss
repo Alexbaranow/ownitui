@@ -1,4 +1,44 @@
+// Высота шапки (должна совпадать с header.component.scss: $header-total-height)
+$header-height: 126px;
+// При max-width: 1220px — компактная шапка (синхрон с header $header-total-height-1220)
+$header-height-1220: 82px;
+$header-height-900: 72px;
+$header-height-600: 68px;
+$header-height-480: 64px;
+// Ширина панели (side-panel.component.scss: min(420px, 100vw)) + отступ справа 16px
+$side-panel-reserved: calc(16px + min(420px, 100vw));
+
 .main {
+  padding-top: $header-height;
   min-height: calc(100vh - 120px);
   background: #fff;
+  transition: margin-right 0.25s ease-out;
+}
+
+@media (max-width: 1220px) {
+  .main {
+    padding-top: $header-height-1220;
+  }
+}
+
+@media (max-width: 900px) {
+  .main {
+    padding-top: $header-height-900;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding-top: $header-height-600;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding-top: $header-height-480;
+  }
+}
+
+.main--panel-open {
+  margin-right: $side-panel-reserved;
 }

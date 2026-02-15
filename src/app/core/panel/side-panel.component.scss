@@ -1,5 +1,9 @@
-// Высота шапки: верхняя полоса 20px + основная 130px
-$panel-top-offset: 150px;
+// Высота шапки (должна совпадать с header.component.scss: $header-total-height)
+$panel-top-offset: 126px;
+$panel-top-offset-1220: 82px; // при max-width: 1220px
+$panel-top-offset-900: 72px;
+$panel-top-offset-600: 68px;
+$panel-top-offset-480: 64px;
 
 .side-panel {
   position: fixed;
@@ -61,4 +65,32 @@ $panel-top-offset: 150px;
   overflow: auto;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 1220px) {
+  .side-panel {
+    top: $panel-top-offset-1220;
+    max-height: calc(100vh - #{$panel-top-offset-1220} - 24px);
+  }
+}
+
+@media (max-width: 900px) {
+  .side-panel {
+    top: $panel-top-offset-900;
+    max-height: calc(100vh - #{$panel-top-offset-900} - 24px);
+  }
+}
+
+@media (max-width: 600px) {
+  .side-panel {
+    top: $panel-top-offset-600;
+    max-height: calc(100vh - #{$panel-top-offset-600} - 24px);
+  }
+}
+
+@media (max-width: 480px) {
+  .side-panel {
+    top: $panel-top-offset-480;
+    max-height: calc(100vh - #{$panel-top-offset-480} - 24px);
+  }
 }
