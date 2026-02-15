@@ -1,8 +1,9 @@
 {
-  "/api/fakestore": {
-    "target": "https://fakestoreapi.com",
-    "pathRewrite": { "^/api/fakestore": "" },
+  "/api/**": {
+    "target": "https://dummyjson.com",
+    "pathRewrite": { "^/api": "" },
     "secure": true,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }

@@ -5,21 +5,24 @@ import { Observable, map, shareReplay } from 'rxjs';
 import { LOCAL_IMAGES } from '../../core/config/product.config';
 import { Product } from './product.model';
 
-/** Fake Store API — через proxy (proxy.conf.json) в dev, чтобы избежать CORS и таймаутов */
-const API_BASE = '/api/fakestore/products';
+/** DummyJSON API — через proxy в dev/prod */
+const API_BASE = '/api/products';
 
-/** Fake Store возвращает цены в USD; множитель для ₽ */
+/** DummyJSON возвращает цены в USD; множитель для ₽ */
 const USD_TO_RUB = 95;
 
-interface FakeStoreProduct {
+interface DummyJsonProduct {
   id: number;
   title: string;
   price: number;
   description: string;
   category: string;
-
-  image: string;
-  rating: { rate: number; count: number };
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  thumbnail: string;
+  images: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,13 +35,15 @@ export class ProductApiService {
       return this.cachedProducts$;
     }
 
-    const stream$ = this.http.get<FakeStoreProduct[]>(API_BASE).pipe(
-      map((arr) => ({
-        products: arr.slice(skip, skip + limit).map((p) => this.mapToProduct(p)),
-        total: arr.length,
-      })),
-      shareReplay(1)
-    );
+    const stream$ = this.http
+      .get<{ products: DummyJsonProduct[]; total: number }>(`${API_BASE}?limit=${limit}&skip=${skip}`)
+      .pipe(
+        map((res) => ({
+          products: res.products.map((p) => this.mapToProduct(p)),
+          total: res.total,
+        })),
+        shareReplay(1)
+      );
     if (limit === 24 && skip === 0) {
       this.cachedProducts$ = stream$;
     }
@@ -46,30 +51,20 @@ export class ProductApiService {
   }
 
   searchProducts(query: string): Observable<{ products: Product[]; total: number }> {
-    const q = query.toLowerCase().trim();
-    return this.http.get<FakeStoreProduct[]>(API_BASE).pipe(
-      map((arr) => {
-        const filtered = q
-          ? arr.filter(
-              (p) =>
-                p.title.toLowerCase().includes(q) ||
-                p.description.toLowerCase().includes(q) ||
-                p.category.toLowerCase().includes(q)
-            )
-          : arr;
-        const products = filtered.map((p) => this.mapToProduct(p));
-        return { products, total: products.length };
-      })
-    );
+    const q = query.trim();
+    const url = q ? `${API_BASE}/search?q=${encodeURIComponent(q)}` : `${API_BASE}?limit=100`;
+    return this.http
+      .get<{ products: DummyJsonProduct[]; total: number }>(url)
+      .pipe(map((res) => ({ products: res.products.map((p) => this.mapToProduct(p)), total: res.total })));
   }
 
-  /** URL картинки: локальные файлы из public/img по индексу продукта */
+  /** URL картинки: локальные файлы из public/img по индексу продукта (fallback для CORS) */
   private toLocalImageUrl(productId: number): string {
     const filename = LOCAL_IMAGES[(productId - 1) % LOCAL_IMAGES.length];
     return `/img/${encodeURIComponent(filename)}`;
   }
 
-  private mapToProduct(raw: FakeStoreProduct): Product {
+  private mapToProduct(raw: DummyJsonProduct): Product {
     const priceRub = Math.round(raw.price * USD_TO_RUB);
     const imageUrl = this.toLocalImageUrl(raw.id);
     return {
@@ -78,10 +73,10 @@ export class ProductApiService {
       description: raw.description,
       category: raw.category,
       price: priceRub,
-      discountPercentage: 0,
-      rating: raw.rating.rate,
-      stock: raw.rating.count,
-      brand: '',
+      discountPercentage: raw.discountPercentage ?? 0,
+      rating: raw.rating,
+      stock: raw.stock,
+      brand: raw.brand ?? '',
       thumbnail: imageUrl,
       images: [imageUrl],
     };
