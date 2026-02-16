@@ -16,6 +16,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { AUTH_STORAGE_KEY } from '../../../core/auth/auth.constants';
 import { emailWithTldValidator, phoneDigitsValidator } from '../../utils/auth-validators';
 import {
   formatPhoneWithHyphens,
@@ -24,8 +25,6 @@ import {
 } from '../../utils/phone-format';
 
 import type { AuthCredentials } from '../../data-access/auth.model';
-
-const AUTH_STORAGE_KEY = 'ownitui_auth';
 
 @Component({
   selector: 'app-auth-overlay',

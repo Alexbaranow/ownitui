@@ -5,12 +5,12 @@ import { HeaderComponent } from './shared/ui/header/header.component';
 import { SidePanelComponent } from './core/panel/side-panel.component';
 import { SidePanelService } from './core/panel/side-panel.service';
 import { AuthService, StoredAuth } from './core/auth/auth.service';
-import { AuthOverlayComponent } from './shared/ui/autorization/auth-overlay.component';
+import { AuthOverlayLoaderComponent } from './shared/ui/autorization/auth-overlay-loader.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, SidePanelComponent, AuthOverlayComponent],
+  imports: [RouterOutlet, HeaderComponent, SidePanelComponent, AuthOverlayLoaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

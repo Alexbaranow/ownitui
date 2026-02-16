@@ -1,13 +1,13 @@
 import { Injectable, computed, signal } from '@angular/core';
 
+import { AUTH_STORAGE_KEY } from './auth.constants';
+
 export interface StoredAuth {
   email: string;
   password: string;
   phone?: string;
   name?: string;
 }
-
-const AUTH_STORAGE_KEY = 'ownitui_auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
