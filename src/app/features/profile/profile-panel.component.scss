@@ -1,7 +1,6 @@
 .profile-panel {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
   padding: 0 20px 24px;
 }
 
@@ -9,7 +8,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 20px 0;
+  padding: 12px 0;
 }
 
 .profile-panel__avatar {
@@ -122,6 +121,18 @@
   padding-top: 16px;
   display: flex;
   justify-content: center;
+}
+
+.profile-panel__login-btn {
+  width: 100%;
+  min-height: 48px;
+  background: #000;
+  color: #fff;
+
+  &:hover {
+    background: #333;
+    color: #fff;
+  }
 }
 
 .profile-panel__logout {

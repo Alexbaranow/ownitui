@@ -1,3 +1,9 @@
+<app-auth-overlay
+  [visible]="auth.showAuthOverlay()"
+  (closed)="onAuthClosed()"
+  (signIn)="onAuthSuccess($event)"
+  (register)="onAuthSuccess($event)"
+/>
 <app-header (searchSubmit)="onSearch($event)" />
 <main class="main" [class.main--panel-open]="panelService.isOpen()">
   <router-outlet />

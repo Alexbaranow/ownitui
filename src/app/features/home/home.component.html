@@ -1,11 +1,4 @@
 <div class="home">
-  <app-auth-overlay
-    [visible]="showAuthOverlay()"
-    (closed)="onAuthClosed()"
-    (signIn)="onAuthSuccess($event)"
-    (register)="onAuthSuccess($event)"
-  />
-
   <section class="home__section">
     <h1 class="visually-hidden">Товары маркетплейса OwnIt</h1>
 

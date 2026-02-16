@@ -58,7 +58,8 @@ export class AuthOverlayComponent {
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email, emailWithTldValidator]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    phone: ['', [Validators.required, phoneDigitsValidator]],
+    phone: ['', [phoneDigitsValidator]],
+    name: [''],
   });
 
   readonly isSignIn = computed(() => this.activeTabIndex() === 0);
@@ -66,6 +67,9 @@ export class AuthOverlayComponent {
   constructor() {
     effect(() => {
       if (this.visible()) {
+        this.activeTabIndex.set(0);
+        this.form.controls.phone.clearValidators();
+        this.form.controls.phone.updateValueAndValidity();
         this.loadSavedCredentials();
       }
     });
@@ -82,6 +86,13 @@ export class AuthOverlayComponent {
   onTabChange(index: number): void {
     this.activeTabIndex.set(index);
     this.form.reset();
+    const phone = this.form.controls.phone;
+    if (index === 0) {
+      phone.clearValidators();
+    } else {
+      phone.setValidators([Validators.required, phoneDigitsValidator]);
+    }
+    phone.updateValueAndValidity();
   }
 
   onSubmit(): void {
@@ -90,14 +101,22 @@ export class AuthOverlayComponent {
       return;
     }
 
-    const { email, password, phone } = this.form.getRawValue();
-    const phoneFull = toFullPhone(phone);
+    const { email, password, phone, name } = this.form.getRawValue();
 
     if (this.isSignIn()) {
-      this.signIn.emit({ email, password, phone: phoneFull });
+      this.signIn.emit({ email, password });
     } else {
-      this.register.emit({ email, password, phone: phoneFull });
+      this.register.emit({
+        email,
+        password,
+        phone: toFullPhone(phone),
+        name: name?.trim() || undefined,
+      });
     }
+    this.form.reset();
+    this.activeTabIndex.set(0);
+    this.form.controls.phone.clearValidators();
+    this.form.controls.phone.updateValueAndValidity();
   }
 
   onClose(): void {
@@ -128,6 +147,7 @@ export class AuthOverlayComponent {
         email: data.email ?? '',
         password: data.password ?? '',
         phone: phoneFormatted,
+        name: data.name ?? '',
       });
     } catch {
       // ignore invalid JSON

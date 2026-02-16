@@ -37,6 +37,18 @@
 
       <div class="auth-overlay__form-wrapper">
         <form [formGroup]="form" class="auth-overlay__form" (ngSubmit)="onSubmit()" novalidate>
+          @if (!isSignIn()) {
+            <mat-form-field appearance="outline" class="auth-overlay__field">
+              <mat-label>Имя</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="name"
+                placeholder="Как к вам обращаться"
+                autocomplete="name"
+              />
+            </mat-form-field>
+          }
           <mat-form-field appearance="outline" class="auth-overlay__field">
             <mat-label>Почта</mat-label>
             <input
@@ -54,25 +66,27 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="auth-overlay__field">
-            <mat-label>Телефон</mat-label>
-            @if (form.controls.phone.value) {
-              <span matTextPrefix>+7 </span>
-            }
-            <input
-              matInput
-              type="tel"
-              formControlName="phone"
-              placeholder="999-123-45-67"
-              autocomplete="tel"
-              (input)="onPhoneInput($event)"
-              maxlength="13"
-              inputmode="numeric"
-            />
-            @if (form.controls.phone.hasError('required') && form.controls.phone.touched) {
-              <mat-error>Введите номер телефона</mat-error>
-            }
-          </mat-form-field>
+          @if (!isSignIn()) {
+            <mat-form-field appearance="outline" class="auth-overlay__field">
+              <mat-label>Телефон</mat-label>
+              @if (form.controls.phone.value) {
+                <span matTextPrefix>+7 </span>
+              }
+              <input
+                matInput
+                type="tel"
+                formControlName="phone"
+                placeholder="999-123-45-67"
+                autocomplete="tel"
+                (input)="onPhoneInput($event)"
+                maxlength="13"
+                inputmode="numeric"
+              />
+              @if (form.controls.phone.hasError('required') && form.controls.phone.touched) {
+                <mat-error>Введите номер телефона</mat-error>
+              }
+            </mat-form-field>
+          }
 
           <mat-form-field appearance="outline" class="auth-overlay__field">
             <mat-label>Пароль</mat-label>

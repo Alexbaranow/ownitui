@@ -1,16 +1,15 @@
-// Высота шапки (должна совпадать с header.component.scss: $header-total-height)
-$panel-top-offset: 126px;
-$panel-top-offset-1220: 82px; // при max-width: 1220px
-$panel-top-offset-900: 72px;
-$panel-top-offset-600: 68px;
-$panel-top-offset-480: 64px;
+// Выравнивание с первым рядом карточек: высота шапки + отступ контента (home padding-top: 24px)
+$panel-top-offset: 150px; // 126 + 24
+$panel-top-offset-1220: 106px; // 82 + 24
+$panel-top-offset-900: 96px; // 72 + 24
+$panel-top-offset-600: 92px; // 68 + 24
+$panel-top-offset-480: 88px; // 64 + 24
 
 .side-panel {
   position: fixed;
   top: $panel-top-offset;
   right: 16px;
-  height: 50vh;
-  min-height: 374px; /* 280 + 1/3 */
+  height: fit-content;
   max-height: calc(100vh - #{$panel-top-offset} - 24px);
   z-index: 1001;
   width: min(420px, 100vw);
@@ -18,7 +17,7 @@ $panel-top-offset-480: 64px;
   background: #fff;
   // box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12); // Нужна тень?
   // border-radius: 0px 0px 0px 0px;
-  border-radius: 0px 0px 12px 12px; // Нужна округлость?
+  border-radius: 12px; // Нужна округлость?
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -35,7 +34,7 @@ $panel-top-offset-480: 64px;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 16px 12px 16px 20px;
+  padding: 16px 12px 8px 20px;
   background: #fff;
   /* Граница: none — скрыта; 1px solid #cac4d0 — показана линия снизу */
   border: none;
@@ -61,16 +60,21 @@ $panel-top-offset-480: 64px;
 }
 
 .side-panel__body {
-  flex: 1;
-  overflow: auto;
+  flex: 0 1 auto;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  max-height: calc(100vh - #{$panel-top-offset} - 24px - 56px);
+  min-height: 0;
 }
 
 @media (max-width: 1220px) {
   .side-panel {
     top: $panel-top-offset-1220;
     max-height: calc(100vh - #{$panel-top-offset-1220} - 24px);
+  }
+  .side-panel__body {
+    max-height: calc(100vh - #{$panel-top-offset-1220} - 24px - 56px);
   }
 }
 
@@ -79,6 +83,9 @@ $panel-top-offset-480: 64px;
     top: $panel-top-offset-900;
     max-height: calc(100vh - #{$panel-top-offset-900} - 24px);
   }
+  .side-panel__body {
+    max-height: calc(100vh - #{$panel-top-offset-900} - 24px - 56px);
+  }
 }
 
 @media (max-width: 600px) {
@@ -86,11 +93,17 @@ $panel-top-offset-480: 64px;
     top: $panel-top-offset-600;
     max-height: calc(100vh - #{$panel-top-offset-600} - 24px);
   }
+  .side-panel__body {
+    max-height: calc(100vh - #{$panel-top-offset-600} - 24px - 56px);
+  }
 }
 
 @media (max-width: 480px) {
   .side-panel {
     top: $panel-top-offset-480;
     max-height: calc(100vh - #{$panel-top-offset-480} - 24px);
+  }
+  .side-panel__body {
+    max-height: calc(100vh - #{$panel-top-offset-480} - 24px - 56px);
   }
 }
