@@ -1,0 +1,111 @@
+@if (visible()) {
+  <div
+    class="auth-overlay"
+    (click)="onBackdropClick()"
+    (keydown.enter)="onBackdropClick()"
+    (keydown.space)="onBackdropClick(); $event.preventDefault()"
+    tabindex="0"
+    role="presentation"
+    aria-modal="true"
+    aria-label="Окно авторизации"
+  >
+    <div
+      class="auth-overlay__dialog"
+      (click)="onDialogClick($event)"
+      (keydown)="onDialogClick($event)"
+      role="dialog"
+      aria-labelledby="auth-dialog-title"
+    >
+      <header class="auth-overlay__header">
+        <h2 id="auth-dialog-title" class="auth-overlay__title">
+          {{ isSignIn() ? 'Вход' : 'Регистрация' }}
+        </h2>
+        <button type="button" class="auth-overlay__close" (click)="onClose()" aria-label="Закрыть">
+          <mat-icon>close</mat-icon>
+        </button>
+      </header>
+
+      <mat-tab-group
+        [selectedIndex]="activeTabIndex()"
+        (selectedIndexChange)="onTabChange($event)"
+        animationDuration="200"
+        mat-stretch-tabs="false"
+      >
+        <mat-tab label="Войти"></mat-tab>
+        <mat-tab label="Зарегистрироваться"></mat-tab>
+      </mat-tab-group>
+
+      <div class="auth-overlay__form-wrapper">
+        <form [formGroup]="form" class="auth-overlay__form" (ngSubmit)="onSubmit()" novalidate>
+          <mat-form-field appearance="outline" class="auth-overlay__field">
+            <mat-label>Почта</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="example&#64;mail.com"
+              autocomplete="email"
+            />
+            @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+              <mat-error>Введите почту</mat-error>
+            }
+            @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+              <mat-error>Некорректный формат почты</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="auth-overlay__field">
+            <mat-label>Телефон</mat-label>
+            @if (form.controls.phone.value) {
+              <span matTextPrefix>+7 </span>
+            }
+            <input
+              matInput
+              type="tel"
+              formControlName="phone"
+              placeholder="999-123-45-67"
+              autocomplete="tel"
+              (input)="onPhoneInput($event)"
+              maxlength="13"
+              inputmode="numeric"
+            />
+            @if (form.controls.phone.hasError('required') && form.controls.phone.touched) {
+              <mat-error>Введите номер телефона</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="auth-overlay__field">
+            <mat-label>Пароль</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              [placeholder]="isSignIn() ? '••••••••' : 'Минимум 6 символов'"
+              [attr.autocomplete]="isSignIn() ? 'current-password' : 'new-password'"
+            />
+            @if (form.controls.password.hasError('required') && form.controls.password.touched) {
+              <mat-error>Введите пароль</mat-error>
+            }
+            @if (form.controls.password.hasError('minlength') && form.controls.password.touched) {
+              <mat-error>Пароль не менее 6 символов</mat-error>
+            }
+          </mat-form-field>
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="auth-overlay__submit"
+            [disabled]="loading()"
+          >
+            @if (loading()) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              {{ isSignIn() ? 'Войти' : 'Зарегистрироваться' }}
+            }
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}

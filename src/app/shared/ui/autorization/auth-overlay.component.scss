@@ -1,0 +1,145 @@
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auth-overlay__dialog {
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  animation: scale-in 0.25s ease-out;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.auth-overlay__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.auth-overlay__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+}
+
+.auth-overlay__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #333;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.auth-overlay__form-wrapper {
+  padding: 16px 24px 24px;
+}
+
+.auth-overlay__form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.auth-overlay__field {
+  width: 100%;
+}
+
+.auth-overlay__submit {
+  margin-top: 16px;
+  min-height: 48px;
+  background-color: #000 !important;
+  color: #fff !important;
+
+  &:hover:not(:disabled) {
+    background-color: #333 !important;
+  }
+
+  mat-spinner {
+    margin: 0 auto;
+  }
+}
+
+// Чёрно-белые стили для Material внутри диалога
+::ng-deep .auth-overlay__dialog {
+  .mat-mdc-tab-header {
+    padding: 0 24px;
+  }
+
+  .mat-mdc-tab,
+  .mat-mdc-form-field,
+  .mat-mdc-input,
+  .mat-mdc-flat-button {
+    color: #000;
+  }
+
+  .mat-mdc-tab .mdc-tab__text-label {
+    color: #333;
+  }
+
+  .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: #000;
+  }
+
+  .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+    --mdc-outlined-text-field-outline-color: #999;
+    --mdc-outlined-text-field-hover-outline-color: #000;
+    --mdc-outlined-text-field-focus-outline-color: #000;
+    --mdc-outlined-text-field-input-text-color: #000;
+    --mdc-outlined-text-field-label-text-color: #666;
+  }
+}
