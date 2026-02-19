@@ -1,5 +1,5 @@
 // Выравнивание с первым рядом карточек: высота шапки + отступ контента (home padding-top: 24px)
-$panel-top-offset: 150px; // 126 + 24
+$panel-top-offset: 95px; // 126 + 24
 $panel-top-offset-1220: 106px; // 82 + 24
 $panel-top-offset-900: 96px; // 72 + 24
 $panel-top-offset-600: 92px; // 68 + 24
@@ -9,12 +9,14 @@ $panel-top-offset-480: 88px; // 64 + 24
   position: fixed;
   top: $panel-top-offset;
   right: 16px;
-  height: fit-content;
-  max-height: calc(100vh - #{$panel-top-offset} - 24px);
+  height: 695px;
+  // max-height: calc(100vh - #{$panel-top-offset} - 24px);
   z-index: 1001;
-  width: min(420px, 100vw);
+
+  width: min(410px, 100vw);
   max-width: 100%;
   background: #fff;
+  padding-top: 10px;
   // box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12); // Нужна тень?
   // border-radius: 0px 0px 0px 0px;
   border-radius: 12px; // Нужна округлость?

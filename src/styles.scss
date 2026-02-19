@@ -14,7 +14,7 @@ $ownitui-theme: mat.define-theme(
   (
     color: (
       theme-type: light,
-      primary: mat.$azure-palette,
+      primary: mat.$blue-palette,
       tertiary: mat.$blue-palette,
     ),
     density: (
@@ -36,6 +36,8 @@ $ownitui-theme: mat.define-theme(
   --m3-outline-variant: #cac4d0;
   --m3-surface: #fef7ff;
   --m3-background: #fffbfe;
+  /** Подсветка активной кнопки навигации (M3 surface-container-low) */
+  --m3-surface-container-low: white;
   --m3-error: #ba1a1a;
   --m3-on-error: #ffffff;
   --m3-label-small-size: 11px;
