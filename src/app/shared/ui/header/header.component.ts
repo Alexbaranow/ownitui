@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -18,15 +17,7 @@ import { SidePanelService, type PanelType } from '../../../core/panel/side-panel
   selector: 'app-header',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterLink,
-    RouterLinkActive,
-    FormsModule,
-    MatToolbar,
-    MatToolbarRow,
-    MatButton,
-    MatIconModule,
-  ],
+  imports: [RouterLink, RouterLinkActive, FormsModule, MatButton, MatIconModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

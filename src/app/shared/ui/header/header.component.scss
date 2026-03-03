@@ -1,52 +1,48 @@
 // =============================================================================
 // Переменные
 // =============================================================================
-// Верхняя полоса
+
+// Верхняя чёрная полоса (Покупателям, Продавцам, Поддержка)
 $header-top-bar-height: 32px;
 $header-top-bar-text: var(--color-text-on-dark);
 $header-top-bar-font-size: 12px;
 $header-top-bar-gap: 20px;
 
-// Основная часть хедера
+// Основная часть шапки (лого, поиск, кнопки)
 $header-main-height: 95px;
 $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
+$header-main-padding: 16px 0;
+
+// Логотип
 $header-logo-color: var(--color-accent-black);
 $header-logo-font: 'Spartan', $header-font-family;
 $header-logo-size: 40px;
-$header-main-padding: 16px 0 16px 0; // Уменьшен нижний отступ
 
-// Поиск и навигация
+// Поле поиска
 $header-placeholder: var(--color-placeholder);
 $header-search-border: var(--color-border-light);
 $header-search-height: 36px;
-$header-search-to-nav-gap: 0; // Полностью убираем отступ между поиском и навигацией
 
-// Навигация (Главная/Аукцион/Категории)
+// Навигация под поиском (Главная, Аукцион, Категории)
 $header-nav-primary-color: var(--color-accent-black);
-$header-nav-primary-size: 10px; // Еще уменьшаем размер шрифта
-$header-nav-primary-gap: 16px; // Уменьшен отступ между пунктами
-
-// ДОБАВЛЕННЫЕ ПЕРЕМЕННЫЕ (исправление ошибки)
-$header-nav-highlight-bg: var(--color-background-highlight);
+$header-nav-primary-size: 10px;
+$header-nav-primary-gap: 16px;
 $header-nav-text: var(--color-text-primary);
+$header-nav-highlight-bg: var(--color-background-highlight);
 
-// Навигация пользователя
+// Кнопки пользователя (Избранное, Уведомления, Сообщения, Профиль)
 $header-nav-user-size: 13px;
 $header-nav-user-gap: 1px;
 $header-nav-user-width: 370px;
 
-/** Итоговая высота шапки */
+// Высота и контейнер
 $header-total-height: calc(#{$header-top-bar-height} + #{$header-main-height});
-
-// Ширина контейнера
 $container-width: 1280px;
 $container-padding: 24px;
 
 // =============================================================================
-// Основные стили
+// Контейнер (общий для top-bar и main-header)
 // =============================================================================
-
-// Единый контейнер для всей шапки
 .container {
   max-width: $container-width;
   margin: 0 auto;
@@ -56,11 +52,12 @@ $container-padding: 24px;
 }
 
 // =============================================================================
-// Корневой блок шапки
+// Корневой блок шапки (CSS-only: при скролле top-bar уезжает вверх, main-header прилипает)
+// https://css-tricks.com/how-to-create-a-shrinking-header-on-scroll-without-javascript/
 // =============================================================================
-.header {
-  position: fixed;
-  top: 0;
+.header-outer {
+  position: sticky;
+  top: -$header-top-bar-height; /* при «прилипании» верхние 32px уходят за viewport */
   left: 0;
   right: 0;
   height: $header-total-height;
@@ -71,7 +68,7 @@ $container-padding: 24px;
 }
 
 // =============================================================================
-// Верхняя чёрная полоса
+// Верхняя чёрная полоса (Покупателям, Продавцам, Поддержка)
 // =============================================================================
 .top-bar {
   display: flex;
@@ -91,7 +88,6 @@ $container-padding: 24px;
 }
 
 .top-bar__spacer {
-  // flex: 1;
   min-width: 0;
 }
 
@@ -114,89 +110,93 @@ $container-padding: 24px;
 }
 
 // =============================================================================
-// Основная часть хедера
+// Основная часть шапки (белая полоса с лого, поиском, кнопками) — прилипает к верху при скролле
 // =============================================================================
 .main-header {
-  height: $header-main-height;
-  background: var(--color-background-white);
+  position: sticky;
+  top: 0;
+  // height: $header-main-height;
 
   .container {
+    max-width: none;
     height: 100%;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
   }
 }
 
-// Сетка с измененными пропорциями: --|-------|---
+// -----------------------------------------------------------------------------
+// Сетка основной части: лого | кнопка категорий | поиск + нав | кнопки юзера
+// -----------------------------------------------------------------------------
 .header-grid {
   display: grid;
-  grid-template-columns: auto minmax(0, 2fr) auto; // логотип | поиск | кнопки
+  grid-template-columns: auto auto 1fr auto;
   align-items: center;
-  // height: 100%;
+  gap: 12px clamp(1.75rem, 5vw, 2.5rem);
   padding: $header-main-padding;
+  min-height: 100%;
 }
 
-// =============================================================================
-// Контейнер логотипа (только центрирует содержимое)
-// =============================================================================
-.logo-container {
-  justify-self: start;
-  height: 90%;
-  display: flex;
-  align-items: center;
-  padding-left: 0;
-}
-
-// // Логотип (без лишних отступов)
-// .logo {
-//   font-size: $header-logo-size;
-//   line-height: 1;
-//   margin: 0;
-//   padding: 0;
-//   vertical-align: middle;
-//   height: auto;
-//   box-sizing: content-box;
-
-//   &:hover {
-//     color: $header-logo-color;
-//     opacity: 0.85;
-//   }
-// }
-
-// =============================================================================
-// Логотип
-// =============================================================================
+// Логотип (ссылка на главную)
 .logo {
+  margin-bottom: 8%;
   font-size: $header-logo-size;
-  line-height: 1; /* Критически важно для текстовых логотипов */
+  line-height: 1;
   font-weight: 400;
   letter-spacing: 0.07em;
   color: $header-logo-color;
   text-decoration: none;
   white-space: nowrap;
   font-family: $header-logo-font;
-  margin: 0; /* Убираем возможные внешние отступы */
-  padding: 0; /* Убираем возможные внутренние отступы */
-  margin-left: -50%;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
-// =============================================================================
-// Блок поиска
-// =============================================================================
-.search-block {
+// Кнопка «Категории» (иконка без подписи)
+.categories-btn {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: $header-search-to-nav-gap;
+  margin-bottom: 40%;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid $header-search-border;
+  border-radius: 8px;
+  background: var(--color-background-white);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+
+  &:hover {
+    border-color: var(--color-accent-black);
+    background: var(--color-background-highlight);
+  }
+}
+
+.categories-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--color-accent-black);
+}
+
+// -----------------------------------------------------------------------------
+// Блок поиска (поле + навигация Главная / Аукцион / Категории)
+// -----------------------------------------------------------------------------
+.search-cell {
+  justify-self: center;
   min-width: 0;
   width: 100%;
-  margin-left: 0; // было 10%
-  margin-right: 0; // было 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .search-form {
-  width: 100%;
   min-width: 0;
-  max-width: 100%;
+  width: 100%;
 }
 
 .search-field {
@@ -205,7 +205,7 @@ $container-padding: 24px;
   gap: 8px;
   width: 100%;
   min-height: $header-search-height;
-  padding-bottom: 2px; /* Уменьшаем нижний отступ */
+  padding-bottom: 2px;
   border-bottom: 1px solid $header-search-border;
   background: var(--color-background-white);
   font-family: $header-font-family;
@@ -242,59 +242,44 @@ $container-padding: 24px;
   }
 }
 
-// =============================================================================
-// Навигация: Главная / Аукцион / Категории (уменьшенный шрифт и отступы)
-// =============================================================================
+// Навигация под полем поиска (Главная, Аукцион, Категории)
 .nav-primary {
   display: flex;
-  gap: $header-nav-primary-gap;
   justify-content: center;
-  // margin-top: -2px; /* Сдвигаем кнопки вверх */
+  gap: $header-nav-primary-gap;
 }
 
 .nav-primary__link {
   color: $header-nav-text !important;
-  text-decoration: none;
   font-size: $header-nav-primary-size !important;
   font-weight: 500 !important;
-  font-family: $header-font-family;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  padding: 1px 6px; /* Уменьшаем внутренние отступы */
-  line-height: 1; /* Критично для компактности */
-  border-radius: 30px;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  padding: 2px 8px;
+  border-radius: 4px;
 
   &:hover {
     color: $header-nav-text !important;
   }
 
   &--active {
-    color: $header-nav-text !important;
     text-decoration: underline;
-    text-underline-offset: 1px; /* Минимальный отступ */
-    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
 }
 
-// =============================================================================
-// Навигация: Избранное, Профиль и т.д.
-// =============================================================================
+// -----------------------------------------------------------------------------
+// Кнопки пользователя (Избранное, Уведомления, Сообщения, Профиль)
+// -----------------------------------------------------------------------------
 .nav-user {
   min-width: 0;
-  margin-top: 3.8%;
-  // Убираем padding-left, который ломает сетку
-  padding-left: 20%;
-  // Прижимаем к правому краю через margin-left: auto
-  margin-left: auto;
-  // Или можно использовать justify-self: end; если нужно
 }
 
 .nav-user__group {
   display: flex;
   align-items: center;
-  // Увеличиваем расстояние между кнопками
-  gap: 2rem; // было: не задан или 12%
-  // или gap: 32px; если хотите фиксированное значение
+  gap: 8px;
+  margin-bottom: 3%;
 }
 
 .nav-user__link {
@@ -303,7 +288,7 @@ $container-padding: 24px;
   font-weight: 400 !important;
   font-family: $header-font-family;
   letter-spacing: normal !important;
-  white-space: nowrap; // Чтобы текст не переносился
+  white-space: nowrap;
   text-decoration: none;
 
   &:hover {
@@ -318,49 +303,4 @@ $container-padding: 24px;
     text-decoration-thickness: 1px;
     background-color: $header-nav-highlight-bg;
   }
-}
-
-// Контейнер для кнопки и поиска
-.search-with-categories {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-}
-
-// Кнопка категорий
-.categories-btn {
-  flex-shrink: 0;
-  // width: 44px;
-  // height: 44px;
-  border: 2px solid var(--color-border-light);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-background-white);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
-
-  &:hover {
-    border-color: var(--color-accent-black);
-    background: var(--color-background-highlight);
-  }
-
-  &:active {
-    background: var(--color-background-active);
-  }
-}
-
-.categories-icon {
-  width: 24px;
-  height: 24px;
-  color: var(--color-accent-black);
-}
-
-// Адаптация поиска
-.search-form {
-  flex: 1;
-  min-width: 0;
 }

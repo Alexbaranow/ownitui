@@ -1,5 +1,6 @@
-<header class="header">
-  <!-- Верхняя полоса -->
+<!-- Обёртка с position: sticky; top: -32px — при скролле верхняя полоса уезжает вверх -->
+<header class="header-outer">
+  <!-- Верхняя полоса (скрывается при прокрутке) -->
   <div class="top-bar">
     <div class="container">
       <div class="top-bar__row">
@@ -17,92 +18,73 @@
   <div class="main-header">
     <div class="container">
       <div class="header-grid">
-        <!-- Логотип (левая колонка) -->
-        <div class="logo-container">
-          <a routerLink="/" class="logo" aria-label="OwnIt — на главную">OwnIt</a>
-        </div>
+        <a routerLink="/" class="logo" aria-label="OwnIt — на главную">OwnIt</a>
 
-        <!-- Блок поиска и основной навигации (средняя колонка) -->
-        <div class="search-container">
-          <div class="search-block">
-            <div class="search-with-categories">
-              <!-- Кнопка категорий -->
-              <button type="button" class="categories-btn" aria-label="Категории">
-                <svg class="categories-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <rect
-                    x="2"
-                    y="2"
-                    width="20"
-                    height="20"
-                    rx="4"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  />
-                  <path d="M7 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                  <path
-                    d="M7 12H14"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M7 16H13"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                  <path
-                    d="M15 8L19 12L15 16"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
+        <button type="button" class="categories-btn" aria-label="Категории">
+          <svg class="categories-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect
+              x="2"
+              y="2"
+              width="20"
+              height="20"
+              rx="4"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path d="M7 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M7 12H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path
+              d="M15 8L19 12L15 16"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <div class="search-cell">
+          <form class="search-form" (ngSubmit)="onSearch()" role="search">
+            <div class="search-field">
+              <mat-icon class="search-field__icon">search</mat-icon>
+              <input
+                class="search-field__input"
+                type="search"
+                placeholder="Поиск"
+                [ngModel]="searchQuery()"
+                (ngModelChange)="searchQuery.set($event)"
+                name="search"
+                aria-label="Поиск по сайту"
+              />
             </div>
-            <form class="search-form" (ngSubmit)="onSearch()" role="search">
-              <div class="search-field">
-                <mat-icon class="search-field__icon">search</mat-icon>
-                <input
-                  class="search-field__input"
-                  type="search"
-                  placeholder="Поиск"
-                  [ngModel]="searchQuery()"
-                  (ngModelChange)="searchQuery.set($event)"
-                  name="search"
-                  aria-label="Поиск по сайту"
-                />
-              </div>
-            </form>
-            <nav class="nav-primary" aria-label="Основная навигация">
-              <a
-                mat-button
-                routerLink="/"
-                routerLinkActive="nav-primary__link--active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                class="nav-primary__link"
-                >Главная</a
-              >
-              <a
-                mat-button
-                routerLink="/auction"
-                routerLinkActive="nav-primary__link--active"
-                class="nav-primary__link"
-                >Аукцион</a
-              >
-              <a
-                mat-button
-                routerLink="/categories"
-                routerLinkActive="nav-primary__link--active"
-                class="nav-primary__link"
-                >Категории</a
-              >
-            </nav>
-          </div>
+          </form>
+          <nav class="nav-primary" aria-label="Основная навигация">
+            <a
+              mat-button
+              routerLink="/"
+              routerLinkActive="nav-primary__link--active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="nav-primary__link"
+              >Главная</a
+            >
+            <a
+              mat-button
+              routerLink="/auction"
+              routerLinkActive="nav-primary__link--active"
+              class="nav-primary__link"
+              >Аукцион</a
+            >
+            <a
+              mat-button
+              routerLink="/categories"
+              routerLinkActive="nav-primary__link--active"
+              class="nav-primary__link"
+              >Категории</a
+            >
+          </nav>
         </div>
 
-        <!-- Блок пользовательского меню (правая колонка) -->
         <div class="user-container">
           <nav class="nav-user" aria-label="Личный кабинет">
             <div class="nav-user__group">
