@@ -1,9 +1,15 @@
+// =============================================================================
+// Контейнер панели профиля
+// =============================================================================
 .profile-panel {
   display: flex;
   flex-direction: column;
   padding: 0 20px 24px;
 }
 
+// =============================================================================
+// Блок пользователя (аватар + имя + рейтинг)
+// =============================================================================
 .profile-panel__user {
   display: flex;
   align-items: center;
@@ -16,7 +22,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--m3-outline-variant, #cac4d0);
+  background: var(--color-border-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,7 +31,7 @@
     font-size: 40px;
     width: 40px;
     height: 40px;
-    color: var(--m3-on-surface-variant, #49454f);
+    color: var(--color-text-secondary);
   }
 }
 
@@ -37,7 +43,7 @@
   display: block;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--m3-on-surface, #1c1b1f);
+  color: var(--color-text-primary);
 }
 
 .profile-panel__rating {
@@ -49,7 +55,7 @@
 
 .profile-panel__rating-value {
   font-size: 0.875rem;
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
 }
 
 .profile-panel__stars {
@@ -59,15 +65,21 @@
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: #f9a825;
+    color: var(--color-rating-star-alt);
   }
 }
 
+// =============================================================================
+// Разделитель
+// =============================================================================
 .profile-panel__divider {
   height: 1px;
-  background: var(--m3-outline-variant, #cac4d0);
+  background: var(--color-border-light);
 }
 
+// =============================================================================
+// Кнопка действия (например «Редактировать»)
+// =============================================================================
 .profile-panel__action {
   margin: 16px 0;
   justify-content: flex-start;
@@ -78,6 +90,9 @@
   }
 }
 
+// =============================================================================
+// Навигация по разделам (Мои объявления, Настройки и т.д.)
+// =============================================================================
 .profile-panel__nav {
   display: flex;
   flex-direction: column;
@@ -92,13 +107,13 @@
   padding: 12px 16px;
   border-radius: 8px;
   text-decoration: none;
-  color: var(--m3-on-surface, #1c1b1f);
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-text-primary);
+  background: var(--color-background-overlay-light);
   font-size: 0.9375rem;
   transition: background 0.15s ease;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.08);
+    background: var(--color-background-overlay-hover);
   }
 
   &--active {
@@ -109,7 +124,7 @@
 }
 
 .profile-panel__nav-count {
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
   font-weight: 400;
 }
 
@@ -117,6 +132,9 @@
   flex: 1;
 }
 
+// =============================================================================
+// Подвал панели (кнопка входа / выхода)
+// =============================================================================
 .profile-panel__footer {
   padding-top: 16px;
   display: flex;
@@ -126,16 +144,16 @@
 .profile-panel__login-btn {
   width: 100%;
   min-height: 48px;
-  background: #000;
-  color: #fff;
+  background: var(--color-accent-black);
+  color: var(--color-text-on-dark);
 
   &:hover {
-    background: #333;
-    color: #fff;
+    background: var(--color-accent-black-hover);
+    color: var(--color-text-on-dark);
   }
 }
 
 .profile-panel__logout {
   min-width: 200px;
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
 }

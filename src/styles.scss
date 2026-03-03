@@ -1,15 +1,11 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+// =============================================================================
+// Angular Material Theme
+// =============================================================================
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.elevation-classes();
 @include mat.app-background();
 
-// Define the theme object.
 $ownitui-theme: mat.define-theme(
   (
     color: (
@@ -23,39 +19,97 @@ $ownitui-theme: mat.define-theme(
   )
 );
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 :root {
   @include mat.all-component-themes($ownitui-theme);
 
-  // Токены из библиотеки Figma
-  --m3-on-surface: #1c1b1f;
-  --m3-on-surface-variant: #49454f;
-  --m3-outline: #79747e;
-  --m3-outline-variant: #cac4d0;
-  --m3-surface: #fef7ff;
-  --m3-background: #fffbfe;
-  /** Подсветка активной кнопки навигации (M3 surface-container-low) */
-  --m3-surface-container-low: white;
-  --m3-error: #ba1a1a;
-  --m3-on-error: #ffffff;
+  // ---------------------------------------------------------------------------
+  // Цвета интерфейса (семантические имена)
+  // ---------------------------------------------------------------------------
+  /** Основной текст на поверхности (тёмно-серый) */
+  --color-text-primary: #1c1b1f;
+  /** Вторичный текст, подписи (серый) */
+  --color-text-secondary: #49454f;
+  /** Граница по умолчанию, разделители (средне-серый) */
+  --color-border-default: #79747e;
+  /** Светлая граница, контур полей (светло-серый) */
+  --color-border-light: #cac4d0;
+  /** Фон страницы */
+  --color-background-page: #fffbfe;
+  /** Фон карточек, панелей */
+  --color-background-surface: #fef7ff;
+  /** Фон подсветки активного элемента (кнопка навигации) */
+  --color-background-highlight: white;
+  /** Цвет ошибки */
+  --color-error: #ba1a1a;
+  /** Текст на фоне ошибки */
+  --color-text-on-error: #ffffff;
+  /** Текст на тёмном фоне (например верхняя полоса шапки) */
+  --color-text-on-dark: #ffffff;
+  /** Белый фон блоков (шапка, карточки) */
+  --color-background-white: #ffffff;
+  /** Чёрный акцент (кнопки, логотип) */
+  --color-accent-black: #000000;
+  /** Placeholder в полях ввода */
+  --color-placeholder: #a0a0a0;
+  /** Подпись поля ввода (label) */
+  --color-label: #666666;
+  /** Тёмно-серый для hover (кнопки) */
+  --color-accent-black-hover: #333333;
+  /** Ещё темнее для active (иконки в шапке) */
+  --color-accent-black-active: #1a1a1a;
+  /** Светло-серый фон (hover кнопок, плейсхолдер картинки) */
+  --color-background-muted: #f5f5f5;
+  /** Лёгкий оверлей фона (пункты меню) */
+  --color-background-overlay-light: rgba(0, 0, 0, 0.04);
+  /** Оверлей фона при hover */
+  --color-background-overlay-hover: rgba(0, 0, 0, 0.08);
+  /** Цвет успеха (скидка) */
+  --color-success: #059669;
+  /** Цвет скидки/акции (красный) */
+  --color-discount: #dc2626;
+  /** Золотая звезда рейтинга */
+  --color-rating-star: #f59e0b;
+  /** Золотая звезда (альт.) */
+  --color-rating-star-alt: #f9a825;
+  /** Кнопка закрытия, вторичный текст в диалогах */
+  --color-icon-muted: #333333;
+  /** Фон кнопки закрытия при hover */
+  --color-background-button-hover: #f0f0f0;
+  /** Граница диалога/карточки */
+  --color-border-dialog: #e0e0e0;
+  /** Тень оверлея (затемнение) */
+  --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
+  /** Тень диалога */
+  --color-shadow-dialog: rgba(0, 0, 0, 0.2);
+  /** Градиент бейджа «Скидка» */
+  --gradient-badge-sale: linear-gradient(135deg, #ec4899, #a855f7);
+  /** Градиент бейджа «Вау» */
+  --gradient-badge-wow: linear-gradient(135deg, #3b82f6, #ec4899);
+  /** Полупрозрачный белый (кнопка избранного на карточке) */
+  --color-background-favorite-btn: rgba(255, 255, 255, 0.9);
+  /** Типографика: размер и вес для label-small */
   --m3-label-small-size: 11px;
   --m3-label-small-weight: 500;
+
+  // Алиасы M3 (совместимость с Material / Figma)
+  --m3-on-surface: var(--color-text-primary);
+  --m3-on-surface-variant: var(--color-text-secondary);
+  --m3-outline: var(--color-border-default);
+  --m3-outline-variant: var(--color-border-light);
+  --m3-surface: var(--color-background-surface);
+  --m3-background: var(--color-background-page);
+  --m3-surface-container-low: var(--color-background-highlight);
+  --m3-error: var(--color-error);
+  --m3-on-error: var(--color-text-on-error);
 }
 
-// Comment out the line below if you want to use the pre-defined typography utility classes.
-// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
-// @include mat.typography-hierarchy($ownitui-theme);
-
-// Comment out the line below if you want to use the deprecated `color` inputs.
-// @include mat.color-variants-backwards-compatibility($ownitui-theme);
-
-/* Global */
+// =============================================================================
+// Глобальная оболочка (html, body)
+// =============================================================================
 html,
 body {
   height: 100%;
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background: #fff;
+  background: var(--color-background-white);
 }
