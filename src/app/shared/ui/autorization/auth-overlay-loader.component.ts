@@ -23,6 +23,10 @@ import type { AuthCredentials } from '../../data-access/auth.model';
 })
 export class AuthOverlayLoaderComponent {
   readonly visible = input.required<boolean>();
+  /** 0 = Войти, 1 = Зарегистрироваться */
+  readonly initialTabIndex = input<number>(0);
+  /** Только форма добавления профиля, без вкладки «Войти» */
+  readonly addProfileOnly = input<boolean>(false);
   readonly closed = output<void>();
   readonly signIn = output<AuthCredentials>();
   readonly register = output<AuthCredentials>();
@@ -46,6 +50,8 @@ export class AuthOverlayLoaderComponent {
         }
         const ref = this.vcr.createComponent(comp);
         ref.setInput('visible', visible);
+        ref.setInput('initialTabIndex', this.initialTabIndex());
+        ref.setInput('addProfileOnly', this.addProfileOnly());
 
         const subClosed = outputToObservable(ref.instance.closed)
           .pipe(takeUntilDestroyed(this.destroyRef))

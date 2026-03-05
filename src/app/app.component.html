@@ -1,9 +1,11 @@
 @defer (when auth.showAuthOverlay()) {
   <app-auth-overlay-loader
     [visible]="auth.showAuthOverlay()"
+    [initialTabIndex]="auth.initialTabIndex()"
+    [addProfileOnly]="auth.addProfileOnlyMode()"
     (closed)="onAuthClosed()"
-    (signIn)="onAuthSuccess($event)"
-    (register)="onAuthSuccess($event)"
+    (signIn)="onSignInSuccess($event)"
+    (register)="onRegisterSuccess($event)"
   />
 }
 <app-header (searchSubmit)="onSearch($event)" />

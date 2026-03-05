@@ -1,11 +1,19 @@
 <div class="profile-panel">
-  @if (auth.userDisplayName()) {
+  @if (auth.isAuthorized()) {
     <section class="profile-panel__user">
       <div class="profile-panel__avatar" aria-hidden="true">
-        <mat-icon>account_circle</mat-icon>
+        @if (currentDisplay().avatarUrl) {
+          <img
+            class="profile-panel__profile-img"
+            [src]="currentDisplay().avatarUrl"
+            [alt]="currentDisplay().displayName"
+          />
+        } @else {
+          <mat-icon>account_circle</mat-icon>
+        }
       </div>
       <div class="profile-panel__info">
-        <span class="profile-panel__name">{{ auth.userDisplayName() }}</span>
+        <span class="profile-panel__name">{{ currentDisplay().displayName }}</span>
         <div class="profile-panel__rating">
           <span class="profile-panel__rating-value">4,5</span>
           <span class="profile-panel__stars" aria-label="Рейтинг 4.5 из 5">
@@ -14,6 +22,33 @@
             }
           </span>
         </div>
+      </div>
+      <div class="profile-panel__extra">
+        @for (o of otherProfiles(); track o.id ?? 'main') {
+          <button
+            type="button"
+            class="profile-panel__profile-logo profile-panel__profile-logo--btn"
+            [title]="'Переключиться на ' + o.displayName"
+            (click)="selectProfile(o.id)"
+          >
+            @if (o.avatarUrl) {
+              <img class="profile-panel__profile-img" [src]="o.avatarUrl" [alt]="o.displayName" />
+            } @else {
+              <span class="profile-panel__profile-initial">{{
+                o.displayName.charAt(0).toUpperCase() || (o.isMain ? '1' : '?')
+              }}</span>
+            }
+          </button>
+        }
+        <button
+          mat-icon-button
+          type="button"
+          class="profile-panel__add-profile"
+          aria-label="Добавить профиль"
+          (click)="openAddProfile()"
+        >
+          <mat-icon>person_add</mat-icon>
+        </button>
       </div>
     </section>
   } @else {
@@ -32,38 +67,28 @@
   @if (auth.isAuthorized()) {
     <div class="profile-panel__divider"></div>
 
-    <button mat-flat-button color="primary" class="profile-panel__action" type="button">
-      <mat-icon>person_add</mat-icon>
-      <span>Добавить профиль</span>
-    </button>
-
-    <div class="profile-panel__divider"></div>
-
     <nav class="profile-panel__nav" aria-label="Разделы профиля">
       <a href="#" class="profile-panel__nav-item profile-panel__nav-item--active">
         <span>Мои объявления</span>
-        <span class="profile-panel__nav-count">(3)</span>
+        <span class="profile-panel__nav-count">[3]</span>
       </a>
       <a href="#" class="profile-panel__nav-item">
         <span>Мои отзывы</span>
-        <span class="profile-panel__nav-count">3</span>
+        <span class="profile-panel__nav-count">[3]</span>
       </a>
       <a href="#" class="profile-panel__nav-item">Адреса</a>
       <a href="#" class="profile-panel__nav-item">Аукцион</a>
       <a href="#" class="profile-panel__nav-item">Настройки</a>
-    </nav>
-
-    <div class="profile-panel__spacer"></div>
-
-    <div class="profile-panel__footer">
       <button
-        mat-stroked-button
-        class="profile-panel__logout"
+        mat-button
         type="button"
-        (click)="auth.logout()"
+        class="profile-panel__nav-item profile-panel__logout"
+        (click)="onLogout()"
       >
         Выйти
       </button>
-    </div>
+    </nav>
+
+    <div class="profile-panel__spacer"></div>
   }
 </div>

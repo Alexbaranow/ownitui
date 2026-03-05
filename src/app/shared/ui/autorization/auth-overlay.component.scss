@@ -111,6 +111,15 @@
   width: 100%;
 }
 
+.auth-overlay__error {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--color-error, #b71c1c);
+  background-color: var(--color-error-bg, rgba(183, 28, 28, 0.08));
+  border-radius: 8px;
+}
+
 .auth-overlay__submit {
   margin-top: 16px;
   min-height: 48px;

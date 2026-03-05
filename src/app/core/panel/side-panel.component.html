@@ -1,7 +1,13 @@
 @if (isOpen()) {
-  <aside class="side-panel" role="dialog" aria-label="{{ title }}" [@panelSlide]>
+  <aside
+    class="side-panel"
+    [class.side-panel--behind-overlay]="behindAddProfileOverlay()"
+    role="dialog"
+    aria-label="{{ title() }}"
+    [@panelSlide]
+  >
     <header class="side-panel__header">
-      <h2 class="side-panel__title">{{ title }}</h2>
+      <h2 class="side-panel__title">{{ title() }}</h2>
       <div class="side-panel__actions">
         <button mat-icon-button type="button" class="side-panel__menu-btn" aria-label="Ещё">
           <mat-icon>more_horiz</mat-icon>
@@ -13,7 +19,7 @@
           aria-label="Закрыть"
           (click)="close()"
         >
-          <mat-icon>remove</mat-icon>
+          <mat-icon>expand_more</mat-icon>
         </button>
       </div>
     </header>
