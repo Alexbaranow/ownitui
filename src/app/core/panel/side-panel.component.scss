@@ -1,53 +1,57 @@
-// Выравнивание с первым рядом карточек: высота шапки + отступ контента (home padding-top: 24px)
-$panel-top-offset: 95px; // 126 + 24
-$panel-top-offset-1220: 106px; // 82 + 24
-$panel-top-offset-900: 96px; // 72 + 24
-$panel-top-offset-600: 92px; // 68 + 24
-$panel-top-offset-480: 88px; // 64 + 24
+// =============================================================================
+// Переменные: панель строго под рядом кнопок, наезжает на нижнюю часть шапки
+// Отступ снизу = зазор слева до карточек (--layout-panel-gap)
+// =============================================================================
+$panel-top-offset: var(--header-height); /* панель сразу под шапкой */
+$panel-top-offset-1220: 5px;
+$panel-top-offset-900: 100px;
+$panel-top-offset-600: 100px;
+$panel-top-offset-480: 100px;
 
+// =============================================================================
+// Контейнер боковой панели
+// =============================================================================
 .side-panel {
   position: fixed;
-  top: $panel-top-offset;
-  right: 16px;
-  height: 695px;
-  // max-height: calc(100vh - #{$panel-top-offset} - 24px);
+  top: var(--header-height);
+  right: clamp(0rem, 0vw, 2.5rem);
+  bottom: var(--layout-panel-gap);
   z-index: 1001;
-
-  width: min(410px, 100vw);
+  width: min(407px, 100vw);
   max-width: 100%;
-  background: #fff;
-  padding-top: 10px;
-  // box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12); // Нужна тень?
-  // border-radius: 0px 0px 0px 0px;
-  border-radius: 12px; // Нужна округлость?
+  background: var(--color-background-white);
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-bottom: 0.1px solid #cac4d0;
-  border: 0.1px solid #cac4d0;
-  // Нужна граница?
-  // border-bottom: none;
-  // border: 0.1px solid none;
+  border: none;
+
+  // Когда открыто окно «Добавление нового профиля» — панель под оверлеем, затемняется фоном
+  &.side-panel--behind-overlay {
+    z-index: 999;
+  }
 }
 
+// =============================================================================
+// Шапка панели (заголовок + кнопки)
+// =============================================================================
 .side-panel__header {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 16px 12px 8px 20px;
-  background: #fff;
-  /* Граница: none — скрыта; 1px solid #cac4d0 — показана линия снизу */
+  padding: 8px 12px 8px 20px;
+  background: var(--color-background-white);
   border: none;
-  min-height: 56px;
+  min-height: 44px;
 }
 
 .side-panel__title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--m3-on-surface, #1c1b1f);
+  color: var(--color-text-primary);
 }
 
 .side-panel__actions {
@@ -58,54 +62,64 @@ $panel-top-offset-480: 88px; // 64 + 24
 
 .side-panel__menu-btn,
 .side-panel__close-btn {
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
 }
 
+// =============================================================================
+// Тело панели (прокручиваемая область)
+// =============================================================================
 .side-panel__body {
   flex: 0 1 auto;
+  min-width: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - #{$panel-top-offset} - 24px - 56px);
+  max-height: calc(100vh - var(--header-height) - var(--layout-panel-gap) - 24px - 44px);
   min-height: 0;
+
+  // Контент панели не должен вызывать горизонтальную прокрутку
+  > * {
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 
+// =============================================================================
+// Адаптив: смещение и высота по брейкпоинтам
+// =============================================================================
 @media (max-width: 1220px) {
   .side-panel {
     top: $panel-top-offset-1220;
-    max-height: calc(100vh - #{$panel-top-offset-1220} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-1220} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-1220} - var(--layout-panel-gap) - 24px - 44px);
   }
 }
 
 @media (max-width: 900px) {
   .side-panel {
     top: $panel-top-offset-900;
-    max-height: calc(100vh - #{$panel-top-offset-900} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-900} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-900} - var(--layout-panel-gap) - 24px - 44px);
   }
 }
 
 @media (max-width: 600px) {
   .side-panel {
     top: $panel-top-offset-600;
-    max-height: calc(100vh - #{$panel-top-offset-600} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-600} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-600} - var(--layout-panel-gap) - 24px - 44px);
   }
 }
 
 @media (max-width: 480px) {
   .side-panel {
     top: $panel-top-offset-480;
-    max-height: calc(100vh - #{$panel-top-offset-480} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-480} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-480} - var(--layout-panel-gap) - 24px - 44px);
   }
 }

@@ -7,8 +7,9 @@ import {
   input,
   output,
   signal,
+  ViewChild,
 } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +17,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { AuthService } from '../../../core/auth/auth.service';
 import { AUTH_STORAGE_KEY } from '../../../core/auth/auth.constants';
 import { emailWithTldValidator, phoneDigitsValidator } from '../../utils/auth-validators';
 import {
@@ -44,8 +46,15 @@ import type { AuthCredentials } from '../../data-access/auth.model';
 })
 export class AuthOverlayComponent {
   private readonly fb = inject(FormBuilder);
+  protected readonly auth = inject(AuthService);
+
+  @ViewChild(FormGroupDirective) private formRef?: FormGroupDirective;
 
   readonly visible = input<boolean>(true);
+  /** 0 = Войти, 1 = Зарегистрироваться */
+  readonly initialTabIndex = input<number>(0);
+  /** Только форма регистрации, без вкладки «Войти» */
+  readonly addProfileOnly = input<boolean>(false);
   readonly loading = signal(false);
 
   readonly closed = output<void>();
@@ -61,17 +70,32 @@ export class AuthOverlayComponent {
     name: [''],
   });
 
-  readonly isSignIn = computed(() => this.activeTabIndex() === 0);
+  readonly isSignIn = computed(() => !this.addProfileOnly() && this.activeTabIndex() === 0);
+  readonly dialogTitle = computed(() =>
+    this.addProfileOnly() ? 'Добавление нового профиля' : this.isSignIn() ? 'Вход' : 'Регистрация'
+  );
 
   constructor() {
-    effect(() => {
-      if (this.visible()) {
-        this.activeTabIndex.set(0);
-        this.form.controls.phone.clearValidators();
-        this.form.controls.phone.updateValueAndValidity();
-        this.loadSavedCredentials();
-      }
-    });
+    effect(
+      () => {
+        if (this.visible()) {
+          this.auth.clearAuthError();
+          const addOnly = this.addProfileOnly();
+          this.activeTabIndex.set(addOnly ? 1 : this.initialTabIndex());
+          const phone = this.form.controls.phone;
+          if (addOnly) {
+            phone.setValidators([Validators.required, phoneDigitsValidator]);
+          } else {
+            phone.clearValidators();
+          }
+          phone.updateValueAndValidity();
+          if (!addOnly) {
+            this.loadSavedCredentials();
+          }
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   onBackdropClick(): void {
@@ -83,8 +107,14 @@ export class AuthOverlayComponent {
   }
 
   onTabChange(index: number): void {
+    this.auth.clearAuthError();
     this.activeTabIndex.set(index);
     this.form.reset();
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
+    // Сбрасываем submitted у директивы формы — иначе Material показывает красную обводку
+    // для невалидных полей после переключения с «Войти» (где форма уже отправлялась).
+    this.formRef?.resetForm(this.form.value);
     const phone = this.form.controls.phone;
     if (index === 0) {
       phone.clearValidators();
@@ -112,10 +142,8 @@ export class AuthOverlayComponent {
         name: name?.trim() || undefined,
       });
     }
-    this.form.reset();
-    this.activeTabIndex.set(0);
-    this.form.controls.phone.clearValidators();
-    this.form.controls.phone.updateValueAndValidity();
+    // Форму не сбрасываем здесь: при ошибке пользователь видит сообщение и может исправить данные
+    // Сброс — при смене вкладки (onTabChange) или при закрытии overlay
   }
 
   onClose(): void {

@@ -1,14 +1,21 @@
+// =============================================================================
+// Контейнер панели профиля
+// =============================================================================
 .profile-panel {
   display: flex;
   flex-direction: column;
   padding: 0 20px 24px;
 }
 
+// =============================================================================
+// Блок пользователя: слева текущий профиль, справа иконки других + «Добавить»
+// =============================================================================
 .profile-panel__user {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 12px 0;
+  width: 100%;
 }
 
 .profile-panel__avatar {
@@ -16,7 +23,8 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--m3-outline-variant, #cac4d0);
+  overflow: hidden;
+  background: var(--color-border-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,11 +33,12 @@
     font-size: 40px;
     width: 40px;
     height: 40px;
-    color: var(--m3-on-surface-variant, #49454f);
+    color: var(--color-text-secondary);
   }
 }
 
 .profile-panel__info {
+  flex: 1;
   min-width: 0;
 }
 
@@ -37,7 +46,7 @@
   display: block;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--m3-on-surface, #1c1b1f);
+  color: var(--color-text-primary);
 }
 
 .profile-panel__rating {
@@ -49,7 +58,7 @@
 
 .profile-panel__rating-value {
   font-size: 0.875rem;
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
 }
 
 .profile-panel__stars {
@@ -59,25 +68,78 @@
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: #f9a825;
+    color: var(--color-rating-star-alt);
   }
 }
 
+// Группа: логотипы других профилей + кнопка «Добавить профиль»
+.profile-panel__extra {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.profile-panel__avatar .profile-panel__profile-img,
+.profile-panel__profile-logo .profile-panel__profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-panel__profile-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &.profile-panel__profile-logo--btn {
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    transition:
+      background 0.15s ease,
+      transform 0.1s ease;
+
+    &:hover {
+      background: var(--color-background-overlay-hover);
+    }
+  }
+}
+
+.profile-panel__profile-initial {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+// Иконка «Добавить профиль»
+.profile-panel__add-profile {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+// =============================================================================
+// Разделитель
+// =============================================================================
 .profile-panel__divider {
   height: 1px;
-  background: var(--m3-outline-variant, #cac4d0);
+  background: var(--color-border-light);
 }
 
-.profile-panel__action {
-  margin: 16px 0;
-  justify-content: flex-start;
-  gap: 8px;
-
-  mat-icon {
-    margin: 0;
-  }
-}
-
+// =============================================================================
+// Навигация по разделам (Мои объявления, Настройки и т.д.)
+// =============================================================================
 .profile-panel__nav {
   display: flex;
   flex-direction: column;
@@ -88,54 +150,71 @@
 .profile-panel__nav-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0;
   padding: 12px 16px;
   border-radius: 8px;
   text-decoration: none;
-  color: var(--m3-on-surface, #1c1b1f);
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
   font-size: 0.9375rem;
   transition: background 0.15s ease;
+  cursor: pointer;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  font-family: inherit;
+  box-sizing: border-box;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.08);
+    background: var(--color-background-overlay-hover);
   }
 
-  &--active {
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+  // Текст слева может сжиматься, счётчик вплотную к тексту
+  > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
 .profile-panel__nav-count {
-  color: var(--m3-on-surface-variant, #49454f);
+  flex-shrink: 0;
+  margin-left: 4px;
+  color: var(--color-text-secondary);
   font-weight: 400;
+  text-decoration: none;
 }
 
 .profile-panel__spacer {
   flex: 1;
 }
 
-.profile-panel__footer {
-  padding-top: 16px;
-  display: flex;
-  justify-content: center;
-}
-
+// =============================================================================
+// Кнопка входа (для неавторизованных)
+// =============================================================================
 .profile-panel__login-btn {
   width: 100%;
   min-height: 48px;
-  background: #000;
-  color: #fff;
+  background: var(--color-accent-black);
+  color: var(--color-text-on-dark);
 
   &:hover {
-    background: #333;
-    color: #fff;
+    background: var(--color-accent-black-hover);
+    color: var(--color-text-on-dark);
   }
 }
 
+// Кнопка «Выйти» в общем списке навигации (без бордера)
 .profile-panel__logout {
-  min-width: 200px;
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
+  border: none !important;
+  box-shadow: none !important;
+  --mdc-text-button-container-color: transparent;
+  --mdc-text-button-outline-color: transparent;
+
+  .mat-mdc-button-touch-target {
+    display: none;
+  }
 }

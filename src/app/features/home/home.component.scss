@@ -1,5 +1,9 @@
+// =============================================================================
+// Секция главной страницы (фон как у хедера)
+// =============================================================================
 .home {
   padding: 24px 0;
+  background: var(--color-background-white);
 }
 
 .home__section {
@@ -9,6 +13,9 @@
   padding: 0 16px;
 }
 
+// =============================================================================
+// Скрытый для скринридеров, видимый контент
+// =============================================================================
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -21,6 +28,9 @@
   border: 0;
 }
 
+// =============================================================================
+// Сетка карточек товаров
+// =============================================================================
 .home__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -33,23 +43,26 @@
   }
 }
 
+// =============================================================================
+// Состояния: загрузка и ошибка
+// =============================================================================
 .home__loading,
 .home__error {
   text-align: center;
   padding: 48px 24px;
-  color: var(--m3-on-surface-variant, #49454f);
+  color: var(--color-text-secondary);
 }
 
 .home__error button {
   margin-top: 16px;
   padding: 10px 24px;
   border-radius: 8px;
-  border: 1px solid var(--m3-outline, #79747e);
-  background: #fff;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-background-white);
   cursor: pointer;
   font-size: 14px;
 
   &:hover {
-    background: #f5f5f5;
+    background: var(--color-background-muted);
   }
 }

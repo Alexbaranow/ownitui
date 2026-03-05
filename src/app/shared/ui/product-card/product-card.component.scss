@@ -1,15 +1,20 @@
-/* Чтобы карточки в одном ряду были одной высоты (grid выравнивает по самой высокой) */
+// =============================================================================
+// Хост: выравнивание высоты карточек в сетке
+// =============================================================================
 :host {
   display: block;
   height: 100%;
 }
 
+// =============================================================================
+// Карточка товара
+// =============================================================================
 .product-card {
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 0;
-  background: #fff;
+  background: var(--color-background-white);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -20,13 +25,15 @@
   }
 }
 
-/* Фиксированная высота — все карточки с одинаковым блоком изображения */
+// =============================================================================
+// Блок изображения (фиксированная высота)
+// =============================================================================
 .product-card__image-wrap {
   position: relative;
   width: 100%;
   height: 240px;
   flex-shrink: 0;
-  background: #f5f5f5;
+  background: var(--color-background-muted);
   overflow: hidden;
 }
 
@@ -46,10 +53,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #79747e;
+  color: var(--color-border-default);
   font-size: 14px;
 }
 
+// =============================================================================
+// Кнопка «В избранное»
+// =============================================================================
 .product-card__favorite {
   position: absolute;
   top: 8px;
@@ -61,8 +71,8 @@
   justify-content: center;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  color: #49454f;
+  background: var(--color-background-favorite-btn);
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition:
     color 0.2s,
@@ -75,11 +85,14 @@
   }
 
   &:hover {
-    background: #fff;
-    color: #ba1a1a;
+    background: var(--color-background-white);
+    color: var(--color-error);
   }
 }
 
+// =============================================================================
+// Бейджи (Скидка, Вау и т.д.)
+// =============================================================================
 .product-card__badges {
   position: absolute;
   bottom: 8px;
@@ -98,16 +111,19 @@
   line-height: 1.2;
 
   &--sale {
-    background: linear-gradient(135deg, #ec4899, #a855f7);
-    color: #fff;
+    background: var(--gradient-badge-sale);
+    color: var(--color-text-on-dark);
   }
 
   &--wow {
-    background: linear-gradient(135deg, #3b82f6, #ec4899);
-    color: #fff;
+    background: var(--gradient-badge-wow);
+    color: var(--color-text-on-dark);
   }
 }
 
+// =============================================================================
+// Тело карточки (цена, название, рейтинг)
+// =============================================================================
 .product-card__body {
   padding: 12px 12px 16px;
   flex: 1;
@@ -127,10 +143,10 @@
 .product-card__price {
   font-size: 18px;
   font-weight: 600;
-  color: #1c1b1f;
+  color: var(--color-text-primary);
 
   &--discount {
-    color: #059669;
+    color: var(--color-success);
   }
 }
 
@@ -142,13 +158,13 @@
 
 .product-card__original {
   font-size: 14px;
-  color: #79747e;
+  color: var(--color-border-default);
 }
 
 .product-card__discount {
   font-size: 13px;
   font-weight: 500;
-  color: #dc2626;
+  color: var(--color-discount);
 }
 
 .product-card__title {
@@ -156,7 +172,7 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 1.35;
-  color: #1c1b1f;
+  color: var(--color-text-primary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -164,6 +180,9 @@
   overflow: hidden;
 }
 
+// =============================================================================
+// Рейтинг и отзывы
+// =============================================================================
 .product-card__rating {
   display: flex;
   align-items: center;
@@ -175,17 +194,17 @@
   font-size: 18px;
   width: 18px;
   height: 18px;
-  color: #f59e0b;
+  color: var(--color-rating-star);
 }
 
 .product-card__rating-value {
   font-size: 14px;
   font-weight: 500;
-  color: #1c1b1f;
+  color: var(--color-text-primary);
 }
 
 .product-card__reviews {
   font-size: 13px;
-  color: #79747e;
+  color: var(--color-border-default);
   margin-left: 2px;
 }

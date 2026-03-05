@@ -18,22 +18,24 @@
     >
       <header class="auth-overlay__header">
         <h2 id="auth-dialog-title" class="auth-overlay__title">
-          {{ isSignIn() ? 'Вход' : 'Регистрация' }}
+          {{ dialogTitle() }}
         </h2>
         <button type="button" class="auth-overlay__close" (click)="onClose()" aria-label="Закрыть">
           <mat-icon>close</mat-icon>
         </button>
       </header>
 
-      <mat-tab-group
-        [selectedIndex]="activeTabIndex()"
-        (selectedIndexChange)="onTabChange($event)"
-        animationDuration="200"
-        mat-stretch-tabs="false"
-      >
-        <mat-tab label="Войти"></mat-tab>
-        <mat-tab label="Зарегистрироваться"></mat-tab>
-      </mat-tab-group>
+      @if (!addProfileOnly()) {
+        <mat-tab-group
+          [selectedIndex]="activeTabIndex()"
+          (selectedIndexChange)="onTabChange($event)"
+          animationDuration="200"
+          mat-stretch-tabs="false"
+        >
+          <mat-tab label="Войти"></mat-tab>
+          <mat-tab label="Зарегистрироваться"></mat-tab>
+        </mat-tab-group>
+      }
 
       <div class="auth-overlay__form-wrapper">
         <form [formGroup]="form" class="auth-overlay__form" (ngSubmit)="onSubmit()" novalidate>
@@ -105,6 +107,10 @@
             }
           </mat-form-field>
 
+          @if (auth.authError(); as error) {
+            <p class="auth-overlay__error" role="alert">{{ error }}</p>
+          }
+
           <button
             mat-flat-button
             color="primary"
@@ -115,7 +121,7 @@
             @if (loading()) {
               <mat-spinner diameter="20"></mat-spinner>
             } @else {
-              {{ isSignIn() ? 'Войти' : 'Зарегистрироваться' }}
+              {{ addProfileOnly() ? 'Добавить' : isSignIn() ? 'Войти' : 'Зарегистрироваться' }}
             }
           </button>
         </form>
