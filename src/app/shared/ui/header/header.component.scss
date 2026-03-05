@@ -5,7 +5,7 @@
 // Верхняя чёрная полоса (Покупателям, Продавцам, Поддержка)
 $header-top-bar-height: 28px;
 $header-top-bar-text: var(--color-text-on-dark);
-$header-top-bar-font-size: 12px;
+$header-top-bar-font-size: 11px;
 $header-top-bar-gap: 20px;
 
 // Основная часть шапки (лого, поиск, кнопки)
@@ -90,6 +90,7 @@ $container-padding: 24px;
 }
 
 .top-bar__spacer {
+  flex: 1;
   min-width: 0;
 }
 
@@ -101,7 +102,9 @@ $container-padding: 24px;
 
 .top-bar__link {
   color: var(--color-background-white) !important;
-  font-family: 'Regular', 'Courier New', monospace;
+  // font-family: 'Regular', 'Courier New', monospace;
+  font-family: $header-font-family;
+  letter-spacing: 0.1em;
   font-size: $header-top-bar-font-size;
   text-decoration: none;
   padding: 4px 0;
@@ -109,6 +112,49 @@ $container-padding: 24px;
   &:hover {
     text-decoration: underline;
   }
+}
+
+.top-bar__locale {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-right: $header-top-bar-gap;
+
+  // Граница блока валюты и языка
+  padding-right: $header-top-bar-gap;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.top-bar__locale-btn {
+  color: var(--color-background-white) !important;
+  font-family: $header-font-family;
+  letter-spacing: 0.05em;
+  font-size: $header-top-bar-font-size;
+  min-width: 0;
+  padding: 0 4px;
+  line-height: $header-top-bar-height;
+
+  .mat-mdc-button-touch-target {
+    height: $header-top-bar-height;
+  }
+}
+
+.top-bar__locale-btn--flag .top-bar__flag {
+  font-size: 14px;
+  line-height: 1;
+  display: inline-block;
+}
+
+.top-bar__locale-chevron {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.top-bar__menu-flag {
+  margin-right: 8px;
 }
 
 // Резерв высоты в потоке (контент не заезжает под шапку)
@@ -284,7 +330,7 @@ $container-padding: 24px;
   color: $header-nav-text !important;
   font-size: $header-nav-primary-size !important;
   font-weight: 500 !important;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.4em;
   text-decoration: none;
   padding: 2px 8px;
   border-radius: 4px;

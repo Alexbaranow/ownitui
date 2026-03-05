@@ -4,6 +4,45 @@
   <div class="top-bar">
     <div class="container">
       <div class="top-bar__row">
+        <div class="top-bar__locale" aria-label="Язык и валюта">
+          <button
+            mat-button
+            type="button"
+            class="top-bar__locale-btn top-bar__locale-btn--flag"
+            [matMenuTriggerFor]="langMenu"
+            aria-haspopup="true"
+            [attr.aria-label]="'Выбор языка: ' + locale.currentLangLabel()"
+          >
+            <span class="top-bar__flag">{{ locale.currentLangFlag() }}</span>
+            <mat-icon class="top-bar__locale-chevron">expand_more</mat-icon>
+          </button>
+          <mat-menu #langMenu="matMenu" class="top-bar__menu">
+            @for (item of locale.languages; track item.code) {
+              <button mat-menu-item (click)="locale.setLang(item.code)">
+                <span class="top-bar__menu-flag">{{ item.flag }}</span>
+                {{ item.label }}
+              </button>
+            }
+          </mat-menu>
+          <button
+            mat-button
+            type="button"
+            class="top-bar__locale-btn"
+            [matMenuTriggerFor]="currencyMenu"
+            aria-haspopup="true"
+            aria-label="Выбор валюты"
+          >
+            {{ locale.currentCurrencyLabel() }}
+            <mat-icon class="top-bar__locale-chevron">expand_more</mat-icon>
+          </button>
+          <mat-menu #currencyMenu="matMenu" class="top-bar__menu">
+            @for (item of locale.currencies; track item.code) {
+              <button mat-menu-item (click)="locale.setCurrency(item.code)">
+                {{ item.label }}
+              </button>
+            }
+          </mat-menu>
+        </div>
         <span class="top-bar__spacer"></span>
         <nav class="top-bar__links" aria-label="Служебные ссылки">
           <a mat-button routerLink="/buyers" class="top-bar__link">Покупателям</a>
