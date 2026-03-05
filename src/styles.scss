@@ -90,8 +90,8 @@ $ownitui-theme: mat.define-theme(
   /** Типографика: размер и вес для label-small */
   --m3-label-small-size: 11px;
   --m3-label-small-weight: 500;
-  /** Высота шапки (32px top-bar + 105px main) — для отступа main и позиции панели */
-  --header-height: 137px;
+  /** Высота шапки (28px top-bar + 92px main) — для отступа main и позиции панели */
+  --header-height: 120px;
   /** Зазор между панелью и контентом (слева) и между панелью и низом экрана (снизу) — один и тот же */
   --layout-panel-gap: 20px;
 

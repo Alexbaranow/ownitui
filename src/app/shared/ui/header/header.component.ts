@@ -6,10 +6,12 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { fromEvent, map, startWith } from 'rxjs';
 
 import { SidePanelService, type PanelType } from '../../../core/panel/side-panel.service';
 
@@ -30,6 +32,16 @@ export class HeaderComponent {
   readonly activePanel = computed(() =>
     this.panelService.isOpen() ? this.panelService.panelType() : null
   );
+
+  /** true, когда страница прокручена — основная часть шапки прижимается к top: 0, чёрная полоса скрыта */
+  private readonly scrollY = toSignal(
+    fromEvent(window, 'scroll').pipe(
+      map(() => window.scrollY),
+      startWith(0)
+    ),
+    { initialValue: 0 }
+  );
+  readonly scrolled = computed(() => this.scrollY() > 0);
 
   onSearch(): void {
     this.searchSubmit.emit(this.searchQuery().trim());

@@ -1,6 +1,6 @@
-<!-- Шапка закреплена сверху (fixed), при прокрутке панель остаётся под кнопками -->
+<!-- Шапка: чёрная полоса в потоке (уезжает при прокрутке), основная часть привязана к экрану (fixed) -->
 <header class="header-outer">
-  <!-- Верхняя полоса (Покупателям, Продавцам, Поддержка) -->
+  <!-- Верхняя полоса (Покупателям, Продавцам, Поддержка) — в потоке, скрывается при прокрутке -->
   <div class="top-bar">
     <div class="container">
       <div class="top-bar__row">
@@ -14,126 +14,128 @@
     </div>
   </div>
 
-  <!-- Основная часть хедера -->
-  <div class="main-header">
-    <div class="container">
-      <div class="header-grid">
-        <a routerLink="/" class="logo" aria-label="OwnIt — на главную">OwnIt</a>
+  <!-- Обёртка под высоту основной части (резерв в потоке); сама основная часть — fixed -->
+  <div class="main-header-wrap">
+    <div class="main-header" [class.main-header--scrolled]="scrolled()">
+      <div class="container">
+        <div class="header-grid">
+          <a routerLink="/" class="logo" aria-label="OwnIt — на главную">OwnIt</a>
 
-        <button type="button" class="categories-btn" aria-label="Категории">
-          <svg class="categories-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <rect
-              x="2"
-              y="2"
-              width="20"
-              height="20"
-              rx="4"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-            <path d="M7 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            <path d="M7 12H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            <path d="M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            <path
-              d="M15 8L19 12L15 16"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-
-        <div class="search-cell">
-          <form class="search-form" (ngSubmit)="onSearch()" role="search">
-            <div class="search-field">
-              <mat-icon class="search-field__icon">search</mat-icon>
-              <input
-                class="search-field__input"
-                type="search"
-                placeholder="Поиск"
-                [ngModel]="searchQuery()"
-                (ngModelChange)="searchQuery.set($event)"
-                name="search"
-                aria-label="Поиск по сайту"
+          <button type="button" class="categories-btn" aria-label="Категории">
+            <svg class="categories-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect
+                x="2"
+                y="2"
+                width="20"
+                height="20"
+                rx="4"
+                stroke="currentColor"
+                stroke-width="2"
               />
-            </div>
-          </form>
-          <nav class="nav-primary" aria-label="Основная навигация">
-            <a
-              mat-button
-              routerLink="/"
-              routerLinkActive="nav-primary__link--active"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="nav-primary__link"
-              >Главная</a
-            >
-            <a
-              mat-button
-              routerLink="/auction"
-              routerLinkActive="nav-primary__link--active"
-              class="nav-primary__link"
-              >Аукцион</a
-            >
-            <a
-              mat-button
-              routerLink="/categories"
-              routerLinkActive="nav-primary__link--active"
-              class="nav-primary__link"
-              >Категории</a
-            >
-          </nav>
-        </div>
+              <path d="M7 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M7 12H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path
+                d="M15 8L19 12L15 16"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
 
-        <div class="user-container">
-          <nav class="nav-user" aria-label="Личный кабинет">
-            <div class="nav-user__group">
-              <button
+          <div class="search-cell">
+            <form class="search-form" (ngSubmit)="onSearch()" role="search">
+              <div class="search-field">
+                <mat-icon class="search-field__icon">search</mat-icon>
+                <input
+                  class="search-field__input"
+                  type="search"
+                  placeholder="Поиск"
+                  [ngModel]="searchQuery()"
+                  (ngModelChange)="searchQuery.set($event)"
+                  name="search"
+                  aria-label="Поиск по сайту"
+                />
+              </div>
+            </form>
+            <nav class="nav-primary" aria-label="Основная навигация">
+              <a
                 mat-button
-                type="button"
-                class="nav-user__link"
-                [class.nav-user__link--active]="activePanel() === 'favorites'"
-                (click)="openPanel('favorites')"
-                aria-label="Избранное"
+                routerLink="/"
+                routerLinkActive="nav-primary__link--active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-primary__link"
+                >Главная</a
               >
-                <!-- <mat-icon class="nav-user__icon">favorite_border</mat-icon> -->
-                <span class="nav-user__label">Избранное</span>
-              </button>
-              <button
+              <a
                 mat-button
-                type="button"
-                class="nav-user__link"
-                [class.nav-user__link--active]="activePanel() === 'notifications'"
-                (click)="openPanel('notifications')"
-                aria-label="Уведомления"
+                routerLink="/auction"
+                routerLinkActive="nav-primary__link--active"
+                class="nav-primary__link"
+                >Аукцион</a
               >
-                <!-- <mat-icon class="nav-user__icon">notifications_none</mat-icon> -->
-                <span class="nav-user__label">Уведомления</span>
-              </button>
-              <button
+              <a
                 mat-button
-                type="button"
-                class="nav-user__link"
-                [class.nav-user__link--active]="activePanel() === 'messages'"
-                (click)="openPanel('messages')"
-                aria-label="Сообщения"
+                routerLink="/categories"
+                routerLinkActive="nav-primary__link--active"
+                class="nav-primary__link"
+                >Категории</a
               >
-                <!-- <mat-icon class="nav-user__icon">message</mat-icon> -->
-                <span class="nav-user__label">Сообщения</span>
-              </button>
-              <button
-                mat-button
-                type="button"
-                class="nav-user__link"
-                [class.nav-user__link--active]="activePanel() === 'profile'"
-                (click)="openPanel('profile')"
-                aria-label="Профиль"
-              >
-                <!-- <mat-icon class="nav-user__icon">person</mat-icon> -->
-                <span class="nav-user__label">Профиль</span>
-              </button>
-            </div>
-          </nav>
+            </nav>
+          </div>
+
+          <div class="user-container">
+            <nav class="nav-user" aria-label="Личный кабинет">
+              <div class="nav-user__group">
+                <button
+                  mat-button
+                  type="button"
+                  class="nav-user__link"
+                  [class.nav-user__link--active]="activePanel() === 'favorites'"
+                  (click)="openPanel('favorites')"
+                  aria-label="Избранное"
+                >
+                  <!-- <mat-icon class="nav-user__icon">favorite_border</mat-icon> -->
+                  <span class="nav-user__label">Избранное</span>
+                </button>
+                <button
+                  mat-button
+                  type="button"
+                  class="nav-user__link"
+                  [class.nav-user__link--active]="activePanel() === 'notifications'"
+                  (click)="openPanel('notifications')"
+                  aria-label="Уведомления"
+                >
+                  <!-- <mat-icon class="nav-user__icon">notifications_none</mat-icon> -->
+                  <span class="nav-user__label">Уведомления</span>
+                </button>
+                <button
+                  mat-button
+                  type="button"
+                  class="nav-user__link"
+                  [class.nav-user__link--active]="activePanel() === 'messages'"
+                  (click)="openPanel('messages')"
+                  aria-label="Сообщения"
+                >
+                  <!-- <mat-icon class="nav-user__icon">message</mat-icon> -->
+                  <span class="nav-user__label">Сообщения</span>
+                </button>
+                <button
+                  mat-button
+                  type="button"
+                  class="nav-user__link"
+                  [class.nav-user__link--active]="activePanel() === 'profile'"
+                  (click)="openPanel('profile')"
+                  aria-label="Профиль"
+                >
+                  <!-- <mat-icon class="nav-user__icon">person</mat-icon> -->
+                  <span class="nav-user__label">Профиль</span>
+                </button>
+              </div>
+            </nav>
+          </div>
         </div>
       </div>
     </div>

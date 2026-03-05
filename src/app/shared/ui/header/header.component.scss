@@ -3,15 +3,15 @@
 // =============================================================================
 
 // Верхняя чёрная полоса (Покупателям, Продавцам, Поддержка)
-$header-top-bar-height: 32px;
+$header-top-bar-height: 28px;
 $header-top-bar-text: var(--color-text-on-dark);
 $header-top-bar-font-size: 12px;
 $header-top-bar-gap: 20px;
 
 // Основная часть шапки (лого, поиск, кнопки)
-$header-main-height: 105px;
+$header-main-height: 92px;
 $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
-$header-main-padding: 16px 0;
+$header-main-padding: 8px 0;
 
 // Логотип
 $header-logo-color: var(--color-accent-black);
@@ -52,7 +52,8 @@ $container-padding: 24px;
 }
 
 // =============================================================================
-// Хост и шапка — явно #ffffff, чтобы не перебивалось темой Material
+// Хост и шапка — явно #ffffff
+// Чёрная полоса в потоке (уезжает при прокрутке). Основная часть — fixed, при скролле прижимается к top: 0.
 // =============================================================================
 :host {
   display: block;
@@ -60,14 +61,11 @@ $container-padding: 24px;
 }
 
 .header-outer {
-  position: fixed;
-  top: 0;
+  position: relative;
   left: 0;
   right: 0;
-  height: $header-total-height;
   z-index: 100;
   background: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   font-family: $header-font-family;
 }
 
@@ -113,17 +111,36 @@ $container-padding: 24px;
   }
 }
 
-// =============================================================================
-// Основная часть шапки (белая полоса с лого, поиском, кнопками)
-// =============================================================================
+// Резерв высоты в потоке (контент не заезжает под шапку)
+.main-header-wrap {
+  height: $header-main-height;
+}
+
+// Основная часть шапки — привязана к экрану (fixed), при прокрутке поднимается к top: 0
 .main-header {
+  position: fixed;
+  top: $header-top-bar-height;
+  left: 0;
+  right: 0;
+  height: $header-main-height;
+  z-index: 101;
   background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: top 0.2s ease;
+  overflow-y: hidden; /* контейнер не выходит за нижнюю границу хедера */
+
+  &--scrolled {
+    top: 0;
+  }
 
   .container {
     max-width: none;
     height: 100%;
+    max-height: 100%; /* не даём контейнеру расти выше хедера */
     padding-inline: clamp(1rem, 3vw, 2.5rem);
     background: #ffffff;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   // Фон как у шапки
@@ -149,12 +166,11 @@ $container-padding: 24px;
   align-items: center;
   gap: 12px clamp(1.75rem, 5vw, 2.5rem);
   padding: $header-main-padding;
-  min-height: 100%;
+  min-height: 0; /* не растягивать сетку выше контейнера */
 }
 
 // Логотип (ссылка на главную)
 .logo {
-  margin-bottom: 8%;
   font-size: $header-logo-size;
   line-height: 1;
   font-weight: 400;
@@ -174,7 +190,6 @@ $container-padding: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 43%;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -207,7 +222,7 @@ $container-padding: 24px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .search-form {

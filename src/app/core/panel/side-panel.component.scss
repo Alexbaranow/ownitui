@@ -2,7 +2,7 @@
 // Переменные: панель строго под рядом кнопок, наезжает на нижнюю часть шапки
 // Отступ снизу = зазор слева до карточек (--layout-panel-gap)
 // =============================================================================
-$panel-top-offset: 110px;
+$panel-top-offset: var(--header-height); /* панель сразу под шапкой */
 $panel-top-offset-1220: 5px;
 $panel-top-offset-900: 100px;
 $panel-top-offset-600: 100px;
@@ -13,7 +13,7 @@ $panel-top-offset-480: 100px;
 // =============================================================================
 .side-panel {
   position: fixed;
-  top: $panel-top-offset;
+  top: var(--header-height);
   right: clamp(0rem, 0vw, 2.5rem);
   bottom: var(--layout-panel-gap);
   z-index: 1001;
@@ -25,7 +25,8 @@ $panel-top-offset-480: 100px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 0.1px solid var(--color-border-light);
+  // border: 0.1px solid var(--color-border-light); // Нужен бордер?
+  border: none;
 }
 
 // =============================================================================
@@ -69,7 +70,7 @@ $panel-top-offset-480: 100px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - #{$panel-top-offset} - var(--layout-panel-gap) - 24px - 56px);
+  max-height: calc(100vh - var(--header-height) - var(--layout-panel-gap) - 24px - 56px);
   min-height: 0;
 }
 
