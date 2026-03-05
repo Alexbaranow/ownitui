@@ -9,7 +9,7 @@ $header-top-bar-font-size: 12px;
 $header-top-bar-gap: 20px;
 
 // Основная часть шапки (лого, поиск, кнопки)
-$header-main-height: 95px;
+$header-main-height: 105px;
 $header-font-family: Roboto, 'Helvetica Neue', sans-serif;
 $header-main-padding: 16px 0;
 
@@ -52,17 +52,21 @@ $container-padding: 24px;
 }
 
 // =============================================================================
-// Корневой блок шапки (CSS-only: при скролле top-bar уезжает вверх, main-header прилипает)
-// https://css-tricks.com/how-to-create-a-shrinking-header-on-scroll-without-javascript/
+// Хост и шапка — явно #ffffff, чтобы не перебивалось темой Material
 // =============================================================================
+:host {
+  display: block;
+  background: #ffffff;
+}
+
 .header-outer {
-  position: sticky;
-  top: -$header-top-bar-height; /* при «прилипании» верхние 32px уходят за viewport */
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
   height: $header-total-height;
   z-index: 100;
-  background: var(--color-background-white);
+  background: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   font-family: $header-font-family;
 }
@@ -110,17 +114,29 @@ $container-padding: 24px;
 }
 
 // =============================================================================
-// Основная часть шапки (белая полоса с лого, поиском, кнопками) — прилипает к верху при скролле
+// Основная часть шапки (белая полоса с лого, поиском, кнопками)
 // =============================================================================
 .main-header {
-  position: sticky;
-  top: 0;
-  // height: $header-main-height;
+  background: #ffffff;
 
   .container {
     max-width: none;
     height: 100%;
     padding-inline: clamp(1rem, 3vw, 2.5rem);
+    background: #ffffff;
+  }
+
+  // Фон как у шапки
+  .header-grid,
+  .search-cell,
+  .user-container {
+    background: #ffffff;
+  }
+
+  .mat-mdc-button,
+  .mdc-button {
+    --mdc-filled-button-container-color: transparent;
+    --mdc-text-button-container-color: transparent;
   }
 }
 
@@ -158,7 +174,7 @@ $container-padding: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40%;
+  margin-bottom: 43%;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -269,7 +285,7 @@ $container-padding: 24px;
 }
 
 // -----------------------------------------------------------------------------
-// Кнопки пользователя (Избранное, Уведомления, Сообщения, Профиль)
+// Кнопки пользователя (Material-tabs: uppercase, индикатор, линия снизу)
 // -----------------------------------------------------------------------------
 .nav-user {
   min-width: 0;
@@ -277,30 +293,47 @@ $container-padding: 24px;
 
 .nav-user__group {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 3%;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 0;
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .nav-user__link {
   color: $header-nav-text !important;
-  font-size: $header-nav-user-size !important;
-  font-weight: 400 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
   font-family: $header-font-family;
-  letter-spacing: normal !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
+  padding: 0 8px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  border: none;
+  border-radius: 0;
+  background: transparent;
 
   &:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
+    background: rgba(0, 0, 0, 0.04);
   }
 
   &--active {
     color: $header-nav-text !important;
-    text-decoration: underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 1px;
-    background-color: $header-nav-highlight-bg;
+    background: rgba(0, 0, 0, 0.04);
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: #1976d2;
+    }
   }
 }

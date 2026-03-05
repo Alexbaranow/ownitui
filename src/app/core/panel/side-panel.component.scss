@@ -1,12 +1,12 @@
 // =============================================================================
-// Переменные: смещение панели по вертикали (выравнивание с первым рядом карточек)
+// Переменные: панель строго под рядом кнопок, наезжает на нижнюю часть шапки
+// Отступ снизу = зазор слева до карточек (--layout-panel-gap)
 // =============================================================================
-/** Высота шапки + отступ контента home (24px) */
-$panel-top-offset: 95px;
-$panel-top-offset-1220: 106px;
-$panel-top-offset-900: 96px;
-$panel-top-offset-600: 92px;
-$panel-top-offset-480: 88px;
+$panel-top-offset: 110px;
+$panel-top-offset-1220: 5px;
+$panel-top-offset-900: 100px;
+$panel-top-offset-600: 100px;
+$panel-top-offset-480: 100px;
 
 // =============================================================================
 // Контейнер боковой панели
@@ -14,14 +14,14 @@ $panel-top-offset-480: 88px;
 .side-panel {
   position: fixed;
   top: $panel-top-offset;
-  right: 16px;
-  height: 695px;
+  right: clamp(0rem, 0vw, 2.5rem);
+  bottom: var(--layout-panel-gap);
   z-index: 1001;
-  width: min(410px, 100vw);
+  width: min(407px, 100vw);
   max-width: 100%;
   background: var(--color-background-white);
   padding-top: 10px;
-  border-radius: 12px;
+  // border-radius: 12px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -69,7 +69,7 @@ $panel-top-offset-480: 88px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - #{$panel-top-offset} - 24px - 56px);
+  max-height: calc(100vh - #{$panel-top-offset} - var(--layout-panel-gap) - 24px - 56px);
   min-height: 0;
 }
 
@@ -79,39 +79,35 @@ $panel-top-offset-480: 88px;
 @media (max-width: 1220px) {
   .side-panel {
     top: $panel-top-offset-1220;
-    max-height: calc(100vh - #{$panel-top-offset-1220} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-1220} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-1220} - var(--layout-panel-gap) - 24px - 56px);
   }
 }
 
 @media (max-width: 900px) {
   .side-panel {
     top: $panel-top-offset-900;
-    max-height: calc(100vh - #{$panel-top-offset-900} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-900} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-900} - var(--layout-panel-gap) - 24px - 56px);
   }
 }
 
 @media (max-width: 600px) {
   .side-panel {
     top: $panel-top-offset-600;
-    max-height: calc(100vh - #{$panel-top-offset-600} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-600} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-600} - var(--layout-panel-gap) - 24px - 56px);
   }
 }
 
 @media (max-width: 480px) {
   .side-panel {
     top: $panel-top-offset-480;
-    max-height: calc(100vh - #{$panel-top-offset-480} - 24px);
   }
   .side-panel__body {
-    max-height: calc(100vh - #{$panel-top-offset-480} - 24px - 56px);
+    max-height: calc(100vh - #{$panel-top-offset-480} - var(--layout-panel-gap) - 24px - 56px);
   }
 }
